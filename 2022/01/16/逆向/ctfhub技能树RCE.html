@@ -1,0 +1,27 @@
+<hr>
+<p>title: ctfhub技能树RCE<br>date: 2022-03-31 19:51:24<br>tags:<br>      -web<br>      -ctf<br>categories: wp类</p>
+<hr>
+<p>RCE</p>
+<!--more-->
+
+<h1 id="CTFHub命令注入-过滤cat"><a href="#CTFHub命令注入-过滤cat" class="headerlink" title="CTFHub命令注入-过滤cat"></a>CTFHub命令注入-过滤cat</h1><p>首先先查看源码</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/fb8b5629be08e166ca38341929dc13bf.png" alt="image-20220406205707623"></p>
+<p>首先看到preg_match_all有三个函数，可以分析一下这三个参数是干嘛的</p>
+<p>运行结果如下</p>
+<pre><code>Array
+(
+    [0] =&gt; &lt;b&gt;PHP&lt;/b&gt;
+    [1] =&gt; &lt;b&gt;Programming Language&lt;/b&gt;
+)
+</code></pre>
+<p>可以看出输出的结果存在第三个函数中</p>
+<p>同样，exec函数也是如此，运行结果存在$res里面</p>
+<pre><code>&lt;pre&gt;
+&lt;?php
+if ($res) {
+    print_r($res);
+}
+?&gt;
+&lt;/pre&gt;
+</code></pre>
+<p>然后输出res，如果没有语句执行，m的变量</p>

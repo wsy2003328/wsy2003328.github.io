@@ -1,0 +1,12 @@
+
+            <div class="center-content error">
+        <h3>you need login</h3>
+        <!--/admin-->
+        <!--/static.js-->
+        <!--if not request.full_path.endswith(".js?"):
+            if not request.full_path.startswith("/login"):
+                return redirect("login")-->
+
+    </div> 
+
+    

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="web中常见的解题思路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctf中web常用的解题思路">
+<meta property="og:url" content="http://example.com/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="web中常见的解题思路">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-18T14:08:06.000Z">
+<meta property="article:modified_time" content="2022-02-04T16:40:40.990Z">
+<meta property="article:author" content="吴淑影">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ctf中web常用的解题思路 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="吴淑影">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctf中web常用的解题思路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-18 22:08:06" itemprop="dateCreated datePublished" datetime="2022-01-18T22:08:06+08:00">2022-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-05 00:40:40" itemprop="dateModified" datetime="2022-02-05T00:40:40+08:00">2022-02-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ctf%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">ctf类</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" class="post-meta-item leancloud_visitors" data-flag-title="ctf中web常用的解题思路" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>web中常见的解题思路</p>
+<span id="more"></span>
+
+<h1 id="常见思路"><a href="#常见思路" class="headerlink" title="常见思路"></a>常见思路</h1><h2 id="1-直接查看源码"><a href="#1-直接查看源码" class="headerlink" title="1.直接查看源码"></a>1.直接查看源码</h2><p>查看源码的方法除了鼠标右键查看外，还可以通过在网址栏前面加入”view-source:“，语句或者通过F12键打开控制台，通过控制台改变一些元素的信息来获取flag</p>
+<h2 id="2-查看修改过添加HTTP请求头响应头"><a href="#2-查看修改过添加HTTP请求头响应头" class="headerlink" title="2. 查看修改过添加HTTP请求头响应头"></a>2. 查看修改过添加HTTP请求头响应头</h2><p>对于这种类型的题目，可能直接修改信息行不通，那就得用到BP这个工具了，通过修改代理来间接改变成题目所需要的信息，再通过软件运行，即可得到flag，对于一些有SQL语句预防的情况下可以使用“’ or 1=1 group by pwd with rollup limit 1 offset 2#   ”这条语句直接得到flag</p>
+<h2 id="3-后台登录"><a href="#3-后台登录" class="headerlink" title="3.后台登录"></a>3.后台登录</h2><p>绕过登录获得FLAG</p>
+<h2 id="4-利用开发者工具控制台"><a href="#4-利用开发者工具控制台" class="headerlink" title="4.利用开发者工具控制台"></a>4.利用开发者工具控制台</h2><p> 如果打开题目是很多的代码，可以将代码粘贴至控制台（例如jother代码属于js代码的一种）然后控制台会执行该代码</p>
+<h2 id="5-使用BP拦截"><a href="#5-使用BP拦截" class="headerlink" title="5.使用BP拦截"></a>5.使用BP拦截</h2><p>BP是一个很强大的软件，如果对于该软件不怎么了解的话，可以参考BP的手册Burp-Suite-使用手册.docx，可以很快的使用这个软件完成各种功能</p>
+<h2 id="6-上传绕过"><a href="#6-上传绕过" class="headerlink" title="6.上传绕过"></a>6.上传绕过</h2><p> 由于文件上传功能实现代码没有严格限制用户上传到文件后缀以及文件类型，导致攻击者能够向某个可通过WEB访问的目录上传恶意文件，并被脚本解析器执行，这样就可以在远程服务器上执行恶意脚本 例如  一句话木马</p>
+<p>文件截断：在文件头末尾改变一下，把十六进制的空格（20）改成空字节（00）</p>
+<h2 id="7-SQL注入"><a href="#7-SQL注入" class="headerlink" title="7.SQL注入"></a>7.SQL注入</h2><p>  SQL注入就是把sql语句以精妙的方式放到输入框中，送到后台去执行，从而获取非法的信息</p>
+<p>判断是否存在SQL注入的一些语句：”1‘ and 1=1，””and 1=2“</p>
+<h2 id="8-cookie"><a href="#8-cookie" class="headerlink" title="8.cookie"></a>8.cookie</h2><p> 登录网站的时候会产生cookie信息，通过获取cookie信息来绕过登录**</p>
+<p><strong>用BP来获取数据包，通过删掉cookie信息来得到flag</strong></p>
+<h2 id="9-HASH函数"><a href="#9-HASH函数" class="headerlink" title="9.HASH函数"></a>9.HASH函数</h2><p><strong>利用sha函数的漏洞（sha函数默认传入的是字符串，传入其他类型得到的结果是false)</strong></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>1.直接查看源码<br>2.查看修改或添加http请求头响应<br>3.302跳转的中专网站有信息<br>4.查看开发者工具控制台<br>5.JavaScript代码，包括js加解密<br>6.使用burp拦截<br>7.robots. txt<br>8.asp. php代码审计<br>9.sql注入<br>10.简单脚本使用<br>11.后台登录<br>12.代码逆向<br>13.上传绕过<br>14.hash函数<br>15.备份文件<br>16.验证码<br>17.cookie<br>18.MD5碰撞</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>吴淑影
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/01/18/ctf%E4%B8%ADweb%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" title="ctf中web常用的解题思路">http://example.com/2022/01/18/ctf中web常用的解题思路/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/17/web%E4%B8%AD%E5%B8%B8%E8%A7%81%E7%9A%84%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E4%BF%AE%E5%A4%8D/" rel="prev" title="web中常见的漏洞及其修复">
+      <i class="fa fa-chevron-left"></i> web中常见的漏洞及其修复
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/22/CTF%E4%B8%ADmisc%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/" rel="next" title="CTF中misc的基本解题思路">
+      CTF中misc的基本解题思路 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">常见思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%9B%B4%E6%8E%A5%E6%9F%A5%E7%9C%8B%E6%BA%90%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">1.直接查看源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%9F%A5%E7%9C%8B%E4%BF%AE%E6%94%B9%E8%BF%87%E6%B7%BB%E5%8A%A0HTTP%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%93%8D%E5%BA%94%E5%A4%B4"><span class="nav-number">1.2.</span> <span class="nav-text">2. 查看修改过添加HTTP请求头响应头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">3.后台登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%88%A9%E7%94%A8%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-number">1.4.</span> <span class="nav-text">4.利用开发者工具控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8BP%E6%8B%A6%E6%88%AA"><span class="nav-number">1.5.</span> <span class="nav-text">5.使用BP拦截</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87"><span class="nav-number">1.6.</span> <span class="nav-text">6.上传绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-SQL%E6%B3%A8%E5%85%A5"><span class="nav-number">1.7.</span> <span class="nav-text">7.SQL注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-cookie"><span class="nav-number">1.8.</span> <span class="nav-text">8.cookie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-HASH%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.</span> <span class="nav-text">9.HASH函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="吴淑影"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">吴淑影</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-ctf/" rel="tag">-web -ctf</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-VNCTF/" rel="tag">-wp -VNCTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%88%B7%E9%A2%98/" rel="tag">web刷题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E4%BF%AE%E5%A4%8D/" rel="tag">web常见漏洞及其修复</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp%E3%80%81/" rel="tag">wp、</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%AE%89%E6%88%98%E5%BD%B9/" rel="tag">长安战役</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022003013号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吴淑影</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了35k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>

