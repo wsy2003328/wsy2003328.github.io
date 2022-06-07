@@ -320,6 +320,13 @@
   </url>
   
   <url>
+    <loc>http://example.com/tags/wp-VNCTF/</loc>
+    <lastmod>2022-06-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/tags/wp%E3%80%81/</loc>
     <lastmod>2022-06-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -328,13 +335,6 @@
   
   <url>
     <loc>http://example.com/tags/%E9%95%BF%E5%AE%89%E6%88%98%E5%BD%B9/</loc>
-    <lastmod>2022-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/tags/wp-VNCTF/</loc>
     <lastmod>2022-06-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
