@@ -339,7 +339,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-10-31 21:05:19 / 修改时间：12:45:10" itemprop="dateCreated datePublished" datetime="2022-10-31T21:05:19+08:00">2022-10-31</time>
+              <time title="创建时间：2022-10-31 21:05:19 / 修改时间：12:51:59" itemprop="dateCreated datePublished" datetime="2022-10-31T21:05:19+08:00">2022-10-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -387,97 +387,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<h1 id="WEEK1"><a href="#WEEK1" class="headerlink" title="WEEK1"></a>WEEK1</h1><h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>先get传参  /?name=1,post传参 key=ctfisgood</p>
-<p>最后把cookie改为admin</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191355647.png?x-oss-process=wsy" alt="image-20220919135550467"></p>
-<h3 id="Head-Header"><a href="#Head-Header" class="headerlink" title="Head?Header!"></a>Head?Header!</h3><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191430561.png?x-oss-process=wsy" alt="image-20220919143017524"></p>
-<p>必须要使用CTF浏览器，改一下User-Agent：CTF</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191431945.png?x-oss-process=wsy" alt="image-20220919143129883"></p>
-<p>得到线索来源要是 ctf.com，所以Referer: ctf.com(往下要空两行)</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191434101.png?x-oss-process=wsy" alt="image-20220919143428019"></p>
-<p>又得到线索要从内网得到flag，所以X-Forwarded-For: 127.0.0.1</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191436725.png?x-oss-process=wsy" alt="image-20220919143621651"></p>
-<h3 id="Word-For-You"><a href="#Word-For-You" class="headerlink" title="Word-For-You"></a>Word-For-You</h3><p>sql注入，用万能语句试一下</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191736374.png?x-oss-process=wsy" alt="image-20220919173644297">成功得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191735156.png?x-oss-process=wsy" alt="image-20220919173508062"></p>
-<h3 id="Not-PHP"><a href="#Not-PHP" class="headerlink" title="Not PHP"></a>Not PHP</h3><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192055277.png?x-oss-process=wsy" alt="image-20220919205518212"></p>
-<p>尝试本地调试，使用phpstudy在本地建立一个做题的网址，先在工具页面下创建php文件，并把题目源码给移过来</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192100321.png?x-oss-process=wsy" alt="image-20220919210020261"></p>
-<p>本题一共有三个if条件句，但是如果要满足同时三个的话对新手而言挺困难，所以我们可以尝试一个个的来满足条件，首先注释掉第二三个条件句</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192110466.png?x-oss-process=wsy" alt="image-20220919211027403"></p>
-<p>这个的意思是如果满足了第一个条件的话，就可以执行cmd命令，尝试一下，发现真的可以，说明第一个就已经绕过去了</p>
-<p>姿势一：使用data协议 </p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192111592.png?x-oss-process=wsy" alt="image-20220919211115456"></p>
-<p>或者</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209212050367.png?x-oss-process=wsy" alt="image-20220921205032327"></p>
-<p>接着看一下第二个if条件句，md5碰撞，两个false相等</p>
-<p>姿势二：使用input协议</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209212051192.png?x-oss-process=wsy" alt="image-20220921205109095"></p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192119899.png?x-oss-process=wsy" alt="image-20220919211956830"></p>
-<p>原理同条件一</p>
-<p>接着看条件三</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192125985.png?x-oss-process=wsy" alt="image-20220919212559922">意思就是不能post数字但是还必须要post  num=2077，首先考虑到的是数组绕过，但是发现没用</p>
-<p>使用00截断试一试，发现是可以的</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192126069.png?x-oss-process=wsy" alt="image-20220919212620979"></p>
-<p>接着就是最大的难点绕过<code>&quot;#&quot;.</code>（如果不绕过的话后面所有的cmd命令都会因为#被注释掉）思路就是在网上搜一下换行符，但是在网上搜到了好几种换行符/n ,/r都不行，所以就使用%0a（换行符,回车键url编码后的符号）</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192131014.png?x-oss-process=wsy" alt="image-20220919213111868"></p>
-<p>成功绕过所有的条件之后，就可以直接cmd执行系统命令</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192131061.png?x-oss-process=wsy" alt="image-20220919213157928"></p>
-<h3 id="我真的的会谢"><a href="#我真的的会谢" class="headerlink" title="我真的的会谢"></a>我真的的会谢</h3><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201609628.png?x-oss-process=wsy" alt="image-20220920160900568"></p>
-<p>flag被分到了三个不同的file，使用dirsearch扫一下目录，</p>
-<p>在/robots.txt，发现了第一段flag   flag{Th1s_Is_s00}</p>
-<p>在index.php.swp里找到第二段flag    0_e4sy_d0_y00</p>
-<p>在<a target="_blank" rel="noopener" href="http://www.zip里面找到了第三段flag/">www.zip里面找到了第三段flag</a>     u_th1nk_so?}</p>
-<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Yesec-no-drumsticks-1"><a href="#Yesec-no-drumsticks-1" class="headerlink" title="Yesec no drumsticks 1"></a>Yesec no drumsticks 1</h3><p>lsb通道走一下，得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191527246.png?x-oss-process=wsy" alt="image-20220919152759174"></p>
-<h3 id="qsdz’s-girlfriend"><a href="#qsdz’s-girlfriend" class="headerlink" title="qsdz’s girlfriend"></a>qsdz’s girlfriend</h3><p>压缩包密码为女友生日，直接暴力破解一下，掩码为20??????</p>
-<p>最后结果生日为20031201</p>
-<p>得到一张图片</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191508397.png?x-oss-process=wsy" alt="image-20220919150856154"></p>
-<p>搜索一下角色姓名为Hikari</p>
-<p>flag{Hikari_20031201}</p>
-<h3 id="EzSnake"><a href="#EzSnake" class="headerlink" title="EzSnake"></a>EzSnake</h3><p>把游戏修改一下通关，然后就会得到一个残缺的二维码，直接补全即可得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201946821.png?x-oss-process=wsy" alt="image-20220919220334044"></p>
-<h3 id="奇怪的音频"><a href="#奇怪的音频" class="headerlink" title="奇怪的音频"></a>奇怪的音频</h3><p>使用sstv编辑器导入此段音频，得到flag</p>
-<p>flag{SSTV_and_R0b0t36}</p>
-<h1 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h1><h3 id="吉奥万·巴蒂斯塔·贝拉索先生的密码"><a href="#吉奥万·巴蒂斯塔·贝拉索先生的密码" class="headerlink" title="吉奥万·巴蒂斯塔·贝拉索先生的密码"></a>吉奥万·巴蒂斯塔·贝拉索先生的密码</h3><p>pqcq{gteygpttmj_kc_zuokwv_kqb_gtofmssi_mnrrjt}</p>
-<p>维吉尼亚解密一下</p>
-<p>flag{bruteforce_is_useful_for_breaking_cipher}</p>
-<h3 id="ceaser"><a href="#ceaser" class="headerlink" title="ceaser"></a>ceaser</h3><p>凯撒密码在线解密</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209191630529.png?x-oss-process=wsy" alt="image-20220919163009491"></p>
-<h3 id="Look-my-eyes"><a href="#Look-my-eyes" class="headerlink" title="Look my eyes"></a>Look my eyes</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请看着我沉默的眼睛</span><br></pre></td></tr></table></figure>
-
-<p>首先题目上有提示  沉默的眼睛（SilentEye）</p>
-<p>使用SilentEye解密一下图片直接看到一串字符</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209192145682.png?x-oss-process=wsy" alt="image-20220919214530599"></p>
-<p>将这串字符base64解码一下得到flag</p>
-<h1 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn"></a>Pwn</h1><h3 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h3><p>checksec pwn找一下文件是32位还是64位</p>
-<p>shift12找到bin/sh,shift空格找到具体文件路径,以及shell的地址</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201733010.png?x-oss-process=wsy" alt="image-20220920173357936"></p>
-<p>找到main函数中16进制的偏移量，转化为10进制之后为32，又因为是64所以偏移量为40</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201738060.png?x-oss-process=wsy" alt="image-20220920173855020"></p>
-<p>在网上搜一下脚本，改一下偏移量和shell的地址（先本地调试一下，然后再远程调试）（esc+shift :+wq是退出脚本编辑模式）</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201928824.png?x-oss-process=wsy" alt="image-20220920192833783"></p>
-<p>运行一下脚本，发现可以连接，直接得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209201932040.png?x-oss-process=wsy" alt="image-20220920193231965"></p>
-<p>（ctrl+z是退出)</p>
-<h1 id="WEEK2"><a href="#WEEK2" class="headerlink" title="WEEK2"></a>WEEK2</h1><h2 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Yesec-no-drumsticks-2"><a href="#Yesec-no-drumsticks-2" class="headerlink" title="Yesec no drumsticks 2"></a>Yesec no drumsticks 2</h3><p>本题考查的是txt零宽度字符隐写，可以看一下这篇文章</p>
-<p><code>https://blog.csdn.net/LJW_wenjingli7/article/details/122096840</code></p>
-<p>直接在线解密一下即可</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209291948115.png?x-oss-process=wsy" alt="image-20220929194814897"></p>
-<p>base58解密然后16进制转字符即可得到flag{Ingr3d1ent_0F_Yesec_i5_OOOOO}</p>
-<h3 id="奇怪的二维码"><a href="#奇怪的二维码" class="headerlink" title="奇怪的二维码"></a>奇怪的二维码</h3><p>Aztec二维码制作一下</p>
-<p><code>https://blog.csdn.net/m0_52100140/article/details/121190898</code></p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209301942593.png?x-oss-process=wsy" alt="image-20220930194227475"></p>
-<p>在线工具扫一下即可<a target="_blank" rel="noopener" href="https://products.aspose.app/barcode/zh-hans/recognize/aztec#">https://products.aspose.app/barcode/zh-hans/recognize/aztec#</a></p>
-<p>flag{Aztec_from_Age_0f_Empires}</p>
-<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="Word-For-You2"><a href="#Word-For-You2" class="headerlink" title="Word For You2"></a>Word For You2</h3><p>使用sqlmap一把梭</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python .\sqlmap.py -u http://3786bef2-b34e-4341-bd5d-5325537428df.node4.buuoj.cn:81/comments.php --data=&quot;name=NewCTFer&quot; --random-agent -D wfy --dump-all</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202210181852144.png?x-oss-process=wsy" alt="image-20221018185230025"></p>
-
+          <p>newstar-CTF</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/31/newstar/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -521,7 +439,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-10-31 19:26:53 / 修改时间：12:48:20" itemprop="dateCreated datePublished" datetime="2022-10-31T19:26:53+08:00">2022-10-31</time>
+              <time title="创建时间：2022-10-31 19:26:53 / 修改时间：12:52:22" itemprop="dateCreated datePublished" datetime="2022-10-31T19:26:53+08:00">2022-10-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -569,42 +487,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="God-of-Aim"><a href="#God-of-Aim" class="headerlink" title="God_of_Aim"></a>God_of_Aim</h2><p>js文件泄露，解密得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211111378.png?x-oss-process=wsy" alt="image-20220921111135206"></p>
-<h2 id="ezhtml"><a href="#ezhtml" class="headerlink" title="ezhtml"></a>ezhtml</h2><p>js文件泄露，直接找到flag</p>
-<h2 id="cookiehead"><a href="#cookiehead" class="headerlink" title="cookiehead"></a>cookiehead</h2><p>一层层的过，然后得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211137992.png?x-oss-process=wsy" alt="image-20220921113749858"></p>
-<h2 id="ezphp"><a href="#ezphp" class="headerlink" title="ezphp"></a>ezphp</h2><p>分析源码</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211200491.png?x-oss-process=wsy" alt="image-20220921120003392"></p>
-<p>最终的payload :<code>?123=flag&amp;flag=123</code></p>
-<h2 id="inclusion"><a href="#inclusion" class="headerlink" title="inclusion"></a>inclusion</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211204458.png?x-oss-process=wsy" alt="image-20220921120432408"></p>
-<p>直接payload:<code>?file=php://filter/read=convert.base64-encode/resource=flag.php</code></p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211205317.png?x-oss-process=wsy" alt="image-20220921120556203"></p>
-<p>base64解码得到flag</p>
-<h2 id="What-are-you-uploading"><a href="#What-are-you-uploading" class="headerlink" title="What are you uploading?"></a>What are you uploading?</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211307933.png?x-oss-process=wsy" alt="image-20220921130737903"></p>
-<p>随便上传一个图片，然后改名为flag.php即可</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211305571.png?x-oss-process=wsy" alt="image-20220921130552500"></p>
-<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><h2 id="Hide-and-Seek"><a href="#Hide-and-Seek" class="headerlink" title="Hide and Seek"></a>Hide and Seek</h2><p>露出来了mo，所以直接复制，得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211316704.png?x-oss-process=wsy" alt="image-20220921131651470"></p>
-<h2 id="Locked-bass"><a href="#Locked-bass" class="headerlink" title="Locked bass"></a>Locked bass</h2><p>伪加密文件，拉入到lunix里面解压</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211333680.png?x-oss-process=wsy" alt="image-20220921133359573"></p>
-<p>解密得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211334974.png?x-oss-process=wsy" alt="image-20220921133444928"></p>
-<h2 id="Nyanyanya"><a href="#Nyanyanya" class="headerlink" title="Nyanyanya!"></a>Nyanyanya!</h2><p>走一下lsb通道</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211742932.png?x-oss-process=wsy" alt="image-20220921174259850"></p>
-<h2 id="Rabbit"><a href="#Rabbit" class="headerlink" title="Rabbit"></a>Rabbit</h2><p>用010编辑器查看一下，在后边看到了一段加密字符串，使用rabbit在线解密</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211756277.png?x-oss-process=wsy" alt="image-20220921175602212"></p>
-<h2 id="What-do-you-recognize-me-by"><a href="#What-do-you-recognize-me-by" class="headerlink" title="What do you recognize me by?"></a>What do you recognize me by?</h2><p>使用010查看发现是一个png格式不对的图片，修改一下文件头即可</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211814278.png?x-oss-process=wsy" alt="image-20220921181447213"></p>
-<p>得到二维码，扫一下得到flag</p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211815788.png?x-oss-process=wsy" alt="image-20220921181508747"></p>
-<h1 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn"></a>Pwn</h1><h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p>直接nc然后cat flag</p>
-<h2 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211847017.png?x-oss-process=wsy" alt="image-20220921184717917"></p>
-<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209211847378.png?x-oss-process=wsy" alt="image-20220921184757319"></p>
-<h1 id="密码"><a href="#密码" class="headerlink" title="密码"></a>密码</h1><h2 id="Vigenere"><a href="#Vigenere" class="headerlink" title="Vigenère"></a>Vigenère</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202209212119303.png?x-oss-process=wsy" alt="image-20220921211914185"></p>
-
+          <p>moectf</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/31/moectf/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1523,7 +1414,7 @@ setInterval("createtime()",250);
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">影影的家共种了45.3k朵花</span>
+  <span class="post-count">影影的家共种了45.4k朵花</span>
 </div>
 
 <br />
