@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2023/01/07/hgame%E7%AC%AC%E4%B8%80%E5%91%A8/</loc>
+    
+    <lastmod>2023-01-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/01/12/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E5%B1%B1%E7%9F%B3CTF%E5%86%AC%E4%BB%A4%E8%90%A5%E7%BB%93%E8%90%A5%E8%B5%9B/</loc>
+    
+    <lastmod>2023-01-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/12/01/Geek%20Challenge%202022/</loc>
     
     <lastmod>2023-01-18</lastmod>
@@ -448,14 +466,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/wp-CTF/</loc>
+    <loc>http://example.com/categories/CTF/</loc>
     <lastmod>2023-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/categories/CTF/</loc>
+    <loc>http://example.com/categories/wp-CTF/</loc>
     <lastmod>2023-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
