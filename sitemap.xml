@@ -466,14 +466,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/CTF/</loc>
+    <loc>http://example.com/categories/wp-CTF/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/categories/wp-CTF/</loc>
+    <loc>http://example.com/categories/CTF/</loc>
     <lastmod>2023-03-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
