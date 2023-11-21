@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/hudielan.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fhudielan.png">
+  <link rel="mask-icon" href="/images/hudielan.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+
+
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入密码') !== ''){
+                alert('密码错误');
+                history.back();
+            }
+        }
+    })();
+</script>
+  <meta name="description" content="CTF中逆向的简单了解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF逆向的简单了解">
+<meta property="og:url" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/index.html">
+<meta property="og:site_name" content="影影之家">
+<meta property="og:description" content="CTF中逆向的简单了解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-16423386008562.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-16423386744123-16423386765075.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-16423389087376.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-16423391058488-164233910903210.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233914940111-164233915191813.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233919896614-164233920639016.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233924106417-164233924440719.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233927641120-164233927968822.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233947346023-164233947545525.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233951141926-164233951340728.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233971053229-164233971306731.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233977271632-164233977429434.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233985245535-164233985413937.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233992837838-164233993022540.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164233999899641-164234000085343.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164234004887044-164234005064246.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164234010203847-164234010417149.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164234013008550-164234013266352.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164234018658153-164234018945755.webp">
+<meta property="og:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-164234021669156-164234021826658.webp">
+<meta property="article:published_time" content="2023-03-26T08:21:38.450Z">
+<meta property="article:modified_time" content="2022-07-08T08:24:05.398Z">
+<meta property="article:author" content="余归">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="逆向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/03/26/%E9%80%86%E5%90%91/640-16423386008562.webp">
+
+<link rel="canonical" href="http://example.com/2023/03/26/%E9%80%86%E5%90%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CTF逆向的简单了解 | 影影之家</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">影影之家</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+        <li class="menu-item menu-item-love">
+
+    <a href="/Love/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Love</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/26/%E9%80%86%E5%90%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="余归">
+      <meta itemprop="description" content="Believe not all that you see nor half what you hear.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="影影之家">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTF逆向的简单了解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-26 16:21:38" itemprop="dateCreated datePublished" datetime="2023-03-26T16:21:38+08:00">2023-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-08 16:24:05" itemprop="dateModified" datetime="2022-07-08T16:24:05+08:00">2022-07-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%86%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">逆向</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/03/26/%E9%80%86%E5%90%91/" class="post-meta-item leancloud_visitors" data-flag-title="CTF逆向的简单了解" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/03/26/%E9%80%86%E5%90%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/03/26/%E9%80%86%E5%90%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>CTF中逆向的简单了解</p>
+<span id="more"></span>
+
+<h1 id="逆向工程简介及发展方向"><a href="#逆向工程简介及发展方向" class="headerlink" title="逆向工程简介及发展方向"></a>逆向工程简介及发展方向</h1><h2 id="《逆向工程核心原理》"><a href="#《逆向工程核心原理》" class="headerlink" title="《逆向工程核心原理》"></a>《逆向工程核心原理》</h2><p>逆向工程，顾名思义，将已经完成的程序经行反编译以找到其内部隐藏细节的过程，我们将其称之为逆向工程</p>
+<p>第一步，我们将通过各种信息收集工具，对要进行逆向分析的程序进行信息处理</p>
+<p>第二步，我们将存在保护的目标程序经行去加密，并且备份其源文件</p>
+<p>第三步，将目标程序拖入静态分析或动态调试软件中经行处理（代码审计或debug）</p>
+<p>第四步，对收集到的信息进行整合，给目标程序打补丁，实现我们的目的</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-16423386008562.webp"></p>
+<p>在CTF比赛中</p>
+<p>逆向工程是CTF比赛中一个重要的方向</p>
+<p>涵盖了Windows逆向，Linux逆向，Android逆向，密码学逆向等诸多方面，对程序代码进行审计，在关键的位置为程序打上补丁，绕过一些复杂的花指令，逆向工程无疑是最具技术含量的工作，但也因为其本身难度之高，一个好的逆向手是团队中最稀缺的人才。</p>
+<p>逆向工程还是pwn方向的前置知识储备</p>
+<p>所谓“知己知彼，百战不殆”，如果说pwn是信息安全世界中最锋利的武器，那逆向工程就是帮助它识破敌人弱点的锐利眼眸。在进行数据溢出攻击之前，我们要用逆向工程的手法，分析目标程序，找到其关键弱点，一击致命。我们可以说逆向是为pwn服务的工具，也可以说pwn是长了牙齿的逆向工程。</p>
+<p>密码学逆向的独特之处</p>
+<p>CTF中，有一部分逆向工程的题目，其本身流程并不复杂，但用到了高级的密码学加密方式，我个人称这种逆向题目为“密码学逆向”，不需要你有很高的程序阅读能力，但是要找出是哪种加密方式，有怎样的特征值，却是个极其艰巨的任务，所以在遇到这种题目的时候，逆向手往往要和密码学方向合作或者自学密码学。</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-16423386744123-16423386765075.webp"></p>
+<h1 id="主要逆向工具"><a href="#主要逆向工具" class="headerlink" title="主要逆向工具"></a>主要逆向工具</h1><h2 id="各种逆向工具简介"><a href="#各种逆向工具简介" class="headerlink" title="各种逆向工具简介"></a>各种逆向工具简介</h2><p>1.编码转换及解密工具</p>
+<p>编码转换工具是信息安全中最常用的工具，因为题目所给出的“答案”为了迷惑我们，经常会使用编码的方式，隐藏在大量垃圾信息中，防止被轻易发现，因此我们需要对某些有特定编码规则的字符串经行编码转化。</p>
+<p>解密工具，因为有密码学逆向的存在，我们需要去熟悉某些特定的解密方法，并以软件和网站来辅助我们的解密过程</p>
+<p>2.文件类型及查壳</p>
+<p>判断文件类型及查壳工具能帮助我们在开始逆向进行必要的信息收集，帮助我们选择正确的反编译及反汇编工具</p>
+<p>3.去保护</p>
+<p>根据之前收集的信息，为之后的代码审计做准备，使用相关工具和手段尽可能去除软件的反编译保护</p>
+<p>4.静态分析</p>
+<p>静态分析软件一般采用线性扫描和递归遍历的方法，将已经经过编译器编译过生成的可执行文件，反编译成汇编代码或伪C语言代码，在静态分析这个步骤中，我们将使用静态分析软件进一步深入收集目标程序的信息，对目标程序进行修改，理解目标程序的实现逻辑。静态分析和动态调试是逆向工程的主体部分</p>
+<p>5.动态调试</p>
+<p>动态调试是逆向工程中的杀手锏，无论多复杂困难的题目，你都能在动态调试中找到解决它的办法，但动态调试软件同样也是逆向工程中最难上手的软件，通过对逆向深入的学习，当你能熟练地掌握汇编语言基础和动态调试工具的使用后，你就是一个合格的逆向手了。</p>
+<h1 id="Windows逆向"><a href="#Windows逆向" class="headerlink" title="Windows逆向"></a>Windows逆向</h1><h2 id="Windows逆向工具"><a href="#Windows逆向工具" class="headerlink" title="Windows逆向工具"></a>Windows逆向工具</h2><h3 id="1-CaptfEncoder"><a href="#1-CaptfEncoder" class="headerlink" title="1.CaptfEncoder"></a>1.CaptfEncoder</h3><p><em>CaptfEncoder</em>是一款跨平台网络安全工具套件,提供网络安全相关编码转换、古典密码、密码学、特殊编码等工具,并聚合各类在线工具</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-16423389087376.webp"></p>
+<h3 id="2-HexEdit"><a href="#2-HexEdit" class="headerlink" title="2.HexEdit"></a>2.HexEdit</h3><p>HexEditXP是一款实用的文本、代码编辑工具，多用于二进制、十六进制文本的编辑操作，拥有编辑磁盘文件、编辑大型文件、颜色高亮、添加书签以及对指定内容进行复制、粘贴、替换等操作，软件还内置了脚本编辑器功能，方便开发者使用</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-16423391058488-164233910903210.webp"></p>
+<h3 id="3-ExeinfoPe"><a href="#3-ExeinfoPe" class="headerlink" title="3.ExeinfoPe"></a>3.ExeinfoPe</h3><p>Exeinfo PE是一款查看PE文件信息的工具,可以查看EXE/DLL文件的编译器信息、是否加壳、入口点地址、输出表/输入表等等PE信息,帮助开发人员对程序进行分析和逆向</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233914940111-164233915191813.webp"></p>
+<h3 id="4-die"><a href="#4-die" class="headerlink" title="4.die"></a>4.die</h3><p><em>Detect it Easy</em>是一个多功能的PE-DIY工具,主要用于壳侦测。功能正日益完善,是不可多得的破解利器，支持文件直接拖放，可添加到右键菜单，非常方便!Die和peid一样可以加载插件</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233919896614-164233920639016.webp"></p>
+<h3 id="5-FFI"><a href="#5-FFI" class="headerlink" title="5.FFI"></a>5.FFI</h3><p>File Format Identifier（超级巡警病毒分析）是一款查壳脱壳工具，同时也是一款病毒分析工具，它可以自动识别文件格式，使用超级巡警的格式识别引擎，集查壳、虚拟机脱壳、PE文件编辑、PE文件重建、导入表抓取(内置虚拟机解密某些加密导入表)、进程内存查看/DUMP、附加数据处理、文件地址转换、PEID插件支持、MD5计算以及快捷的第三方工具利用等功能，适合病毒分析中对一些病毒木马样本进行系统处理。</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233924106417-164233924440719.webp"></p>
+<h3 id="6-IDA-PRO"><a href="#6-IDA-PRO" class="headerlink" title="6.IDA PRO"></a>6.IDA PRO</h3><p>交互式反汇编器专业版（Interactive Disassembler Professional），人们常称其为IDA Pro，或简称为IDA。是最棒的一个静态反编译软件，为安全分析人士不可缺少的利器！IDA Pro是一款交互式的，可编程的，可扩展的，多处理器的，交叉Windows或Linux WinCE MacOS平台主机来分析程序， 被公认为最好的花钱可以买到的逆向工程利器。IDA Pro已经成为事实上的分析敌意代码的标准并让其自身迅速成为攻击研究领域的重要工具。它支持数十种CPU指令集其中包括Intel x86，x64，MIPS，PowerPC，ARM，Z80，68000，c8051等等。</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233927641120-164233927968822.webp"></p>
+<h3 id="7-X64DBG"><a href="#7-X64DBG" class="headerlink" title="7.X64DBG"></a>7.X64DBG</h3><p>x64dbg 是 Windows 下的 32 64 位调试器,类似 ollydbg</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233947346023-164233947545525.webp"></p>
+<h3 id="8-OllyDbg"><a href="#8-OllyDbg" class="headerlink" title="8.OllyDbg"></a>8.OllyDbg</h3><p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233951141926-164233951340728.webp"></p>
+<h2 id="IDA的使用"><a href="#IDA的使用" class="headerlink" title="IDA的使用"></a>IDA的使用</h2><p>想要入门逆向工程，那最正统的路径便是学习怎样使用IDA这个软件，并从这个过程中去学习反编译的技巧和各种逆向方法，但是IDA有两个版本，分别为IDA32和IDA64</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233971053229-164233971306731.webp"></p>
+<p>想进一步熟悉IDA的使用，我们要从题目入手进一步分析</p>
+<ol>
+<li><p>BUUCTF : easyre（基础）</p>
+</li>
+<li><p>BUUCTF : reverse_1（字符串中无flag）</p>
+</li>
+<li><p>BUUCTF : xor (编写脚本)</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233977271632-164233977429434.webp"></p>
+</li>
+</ol>
+<h1 id="常见的加密算法"><a href="#常见的加密算法" class="headerlink" title="常见的加密算法"></a>常见的加密算法</h1><h2 id="base64加密"><a href="#base64加密" class="headerlink" title="base64加密"></a>base64加密</h2><p>base64主要是将输入中的每3字节（共 24 bytes）按每 6 bytes分成一组，变成4个小于64的索引值，然后通过一个索引表得到4个可见字符。</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233985245535-164233985413937.webp"></p>
+<h2 id="TEA算法"><a href="#TEA算法" class="headerlink" title="TEA算法"></a>TEA算法</h2><p>TEA算法是一种常见的分组加密算法，密钥为 128 bytes位，明文为 64 bytes位，主要做了32轮变换，每轮变换都涉及移位和变换。TEA的源码为：</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233992837838-164233993022540.webp"></p>
+<p>对TEA的识别也比较容易，在TEA算法中有一个固定的常数 0x9e3779b9 或者 0x61c88647，出现这两个特征值时可以以此确定TEA算法。</p>
+<h2 id="AES分组加密法"><a href="#AES分组加密法" class="headerlink" title="AES分组加密法"></a>AES分组加密法</h2><p>AES是常见的分组加密算法，其加解密流程如图。</p>
+<p>AES加密过程涉及4种操作：字节替代（SubBytes），行移位（ShiftRows），列混淆（MixColumns）和轮密钥加（AddRoundKey)</p>
+<p>其中，字节替代过程是通过S盒完成一个字节到另一个字节的映射，S盒和逆S盒具体如下：</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164233999899641-164234000085343.webp"></p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164234004887044-164234005064246.webp"></p>
+<p>如果发现程序中有S盒或者动态生成了S盒,则可以确定采用了AES加密。</p>
+<h2 id="RC4加密"><a href="#RC4加密" class="headerlink" title="RC4加密"></a>RC4加密</h2><p>RC4加密算法属于流加密算法，包括初始化函数和加解密函数，函数代码具体如下：</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164234010203847-164234010417149.webp"></p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164234013008550-164234013266352.webp"></p>
+<p>可以看出，初始化代码对字符数组s进行了初始化赋值，且赋值分别递增，之后又对s进行了256次交换操作。通过识别初始化代码，可以判断为RC4算法。</p>
+<h2 id="MD5消息摘要算法"><a href="#MD5消息摘要算法" class="headerlink" title="MD5消息摘要算法"></a>MD5消息摘要算法</h2><p>MD5消息摘要算法，是一种被广泛使用的密码散列函数，可以产生一个128位的散列值，用于确保消息传输的完整性和一致性。MD5加密的函数大致如下：</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164234018658153-164234018945755.webp"></p>
+<p>其中，MD5Init会初始化四个称作MD5链接变量的整型参数。因此如果看到这4个常数0x67452301，0xefcdab89，0x98badcfe，0x10325476，就可以怀疑该函数是否为MD5算法了。</p>
+<p>MD5Init函数代码如下：</p>
+<p><img src="/2023/03/26/%E9%80%86%E5%90%91/640-164234021669156-164234021826658.webp"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>余归
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2023/03/26/%E9%80%86%E5%90%91/" title="CTF逆向的简单了解">http://example.com/2023/03/26/逆向/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/%E9%80%86%E5%90%91/" rel="tag"># 逆向</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/26/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%8F%91%E5%B1%95%E6%96%B9%E5%90%91"><span class="nav-number">1.</span> <span class="nav-text">逆向工程简介及发展方向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%8A%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E3%80%8B"><span class="nav-number">1.1.</span> <span class="nav-text">《逆向工程核心原理》</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">主要逆向工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">各种逆向工具简介</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E9%80%86%E5%90%91"><span class="nav-number">3.</span> <span class="nav-text">Windows逆向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E9%80%86%E5%90%91%E5%B7%A5%E5%85%B7"><span class="nav-number">3.1.</span> <span class="nav-text">Windows逆向工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-CaptfEncoder"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.CaptfEncoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-HexEdit"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.HexEdit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ExeinfoPe"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.ExeinfoPe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-die"><span class="nav-number">3.1.4.</span> <span class="nav-text">4.die</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-FFI"><span class="nav-number">3.1.5.</span> <span class="nav-text">5.FFI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-IDA-PRO"><span class="nav-number">3.1.6.</span> <span class="nav-text">6.IDA PRO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-X64DBG"><span class="nav-number">3.1.7.</span> <span class="nav-text">7.X64DBG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-OllyDbg"><span class="nav-number">3.1.8.</span> <span class="nav-text">8.OllyDbg</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDA%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">IDA的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">常见的加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#base64%E5%8A%A0%E5%AF%86"><span class="nav-number">4.1.</span> <span class="nav-text">base64加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TEA%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">TEA算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E6%B3%95"><span class="nav-number">4.3.</span> <span class="nav-text">AES分组加密法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RC4%E5%8A%A0%E5%AF%86"><span class="nav-number">4.4.</span> <span class="nav-text">RC4加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MD5%E6%B6%88%E6%81%AF%E6%91%98%E8%A6%81%E7%AE%97%E6%B3%95"><span class="nav-number">4.5.</span> <span class="nav-text">MD5消息摘要算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="余归"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">余归</p>
+  <div class="site-description" itemprop="description">Believe not all that you see nor half what you hear.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+
+
+
+      
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div id="myCanvasContainer" class="widget tagcloud">
+        <canvas width="250" height="250" id="resCanvas" style="width=100%">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp-CTF/" rel="tag">-wp -CTF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a><span class="tag-list-count">27</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/" rel="tag">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wp/" rel="tag">wp</a><span class="tag-list-count">19</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97/" rel="tag">心得</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a><span class="tag-list-count">1</span></li></ul>
+        </canvas>
+    </div>
+</div>
+
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; Sun Dec 26 2021 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余归</span>
+</div>
+  <div class="powered-by">
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("12/25/2021 17:38:00");
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "影影已在此快乐的玩耍了 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+<br />
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">影影的家共种了38.9k朵花</span>
+</div>
+
+<br />
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    已经有<span id="busuanzi_value_site_pv"></span>人摘了影影种的花</span>
+    <span class="post-meta-divider"> </span>
+    其中<span id="busuanzi_value_site_uv"></span>人不留痕迹地跑了</span>
+    <span class="post-meta-divider"> </span>
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  <script src="/js/activate-power-mode.min.js"></script>
+  <script>
+    POWERMODE.colorful = true;
+    POWERMODE.shake = false;
+    document.body.addEventListener('input', POWERMODE);
+  </script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'vcFyBSklL05djh0SlQ0i9Idk-gzGzoHsz',
+      appKey     : 'wFXz2jiwl2Jo3Q5LWDFdhUsv',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
+
+
+<script src="/js/cursor.js"></script>
+
+<script type="text/javascript">
+//只在桌面版网页启用特效
+var windowWidth = $(window).width();
+if (windowWidth > 768) {
+    document.write('<script type="text/javascript" src="/js/sakura.js"><\/script>');
+}
+</script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
